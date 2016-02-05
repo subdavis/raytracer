@@ -19,7 +19,7 @@ void Tracer::trace(Room *room, Renderer *r){
     Drawable *obj;
     Vector3 iortho;
     Vector3 ipoint;
-    Vector3 color;
+    int shortest_index;
     
     for(int j=0; j<r->height; j++){
         for(int i=0; i<r->width; i++){
@@ -34,9 +34,10 @@ void Tracer::trace(Room *room, Renderer *r){
                 if (compare != -1.0){
                     if (compare < shortest || shortest == -1.0){
                         shortest = compare;
-                        ipoint = room->cam.point.add( ray.d.Scale(shortest) );
+                        //ipoint = room->cam.point.add( ray.d.Scale(shortest) );
                         //iortho = obj->get_ortho(&ipoint)
-                        //color = Vector3(obj->color->r,obj->color->g,obj->color->b );
+                        //icolor = obj->getColor();
+                        shortest_index = o;
                     }
                 }
             }
@@ -45,7 +46,7 @@ void Tracer::trace(Room *room, Renderer *r){
                 r->set_pixel(i,j, room->bg);
             } else {
                 //do lighting using the intersect point and ortho
-                r->set_pixel(i, j, Color(0,.5,.5));
+                r->set_pixel(i, j, room->objs[shortest_index]->getColor());
             }
         }
     }

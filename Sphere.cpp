@@ -1,7 +1,7 @@
 #include "Sphere.h"
 #include <cmath>
 
-Sphere::Sphere(Vector3 center, double radius, Color *c):
+Sphere::Sphere(Vector3 center, double radius, Color c):
 center(center), radius(radius), color(c)
 {
 }
@@ -33,6 +33,10 @@ double Sphere::intersect(Ray *r){
 
 Vector3 Sphere::Orthogonal(Vector3 point){
     //returns an orthogonal unit vector
+}
+
+Color Sphere::getColor(){
+    return color;
 }
 
 Sphere::~Sphere()

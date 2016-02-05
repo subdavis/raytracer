@@ -9,12 +9,13 @@ class Plane : public Drawable
 {
 public:
     Plane() {}
-    Plane(Vector3 point, Vector3 ortho, Color *c);
-    double intersect(Ray *r);
+    Plane(Vector3 point, Vector3 ortho, Color c);
+    virtual Color getColor();
+    virtual double intersect(Ray *r);
     ~Plane();
     Vector3 point;
     Vector3 ortho;
-    Color *color;
+    Color color;
 
 };
 

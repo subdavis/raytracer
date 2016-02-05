@@ -7,11 +7,11 @@ class Drawable
 {
 public:
     virtual double intersect(Ray *r) = 0;
+    virtual Color getColor() = 0;
     virtual ~Drawable() {}
 //    Drawable();
 //    Drawable* parent;
 //    void addParent(Drawable* parent) {this->parent = parent;}
-    Color *color;
 };
 
 #endif // DRAWABLE_H
