@@ -1,7 +1,7 @@
 #include "Sphere.h"
 #include <cmath>
 
-Sphere::Sphere(Vector3 center, double radius, Color c):
+Sphere::Sphere(Vector3 center, double radius, Color *c):
 center(center), radius(radius), color(c)
 {
 }

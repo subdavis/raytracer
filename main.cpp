@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <sstream>
+#include <iostream>
 #include "Drawable.h"
 #include "Color.h"
 #include "Light.h"
@@ -13,13 +15,14 @@
 int unit_tests(){
     
     printf("Try Creating independent objects\n");
-    Color c = Color(128, 128, 128);
+    Color c = Color(0, .5, .5);
     Light l = Light(Vector3(0,0,0), Vector3(0,-1,0), c);
-    Plane p = Plane(Vector3(0,0,0), Vector3(0,1,0), c);
+    Plane p = Plane(Vector3(0,0,0), Vector3(0,1,0), &c);
     Ray r = Ray(Vector3(0,0,-20), Vector3(0,0,1));
-    Sphere s = Sphere(Vector3(0,0,0), 2, c);
+    Sphere s = Sphere(Vector3(0,0,0), 2, &c);
     
-    //printf("Intersection at %.4f\n",s.intersect(&r));
+    printf("Intersection at %.4f\n",s.intersect(&r));
+    std::cout << c.ntos(255);
     
     printf("Test some vector math\n");
     Vector3 a = Vector3(9, 5, -9);
@@ -51,23 +54,28 @@ int main(int argc, char **argv)
     Vector3 bottom_l = Vector3(.1,.1,-.1);
     
     printf("Now Try Rendering a real room\n");
-    int width = 20;
-    int height = 20;
+    int width = 1000;
+    int height = 1000;
+    int tw = 30;
+    int th = 30;
     Tracer perspective_tracer = Tracer(false, false, false);
     Room perspective_room = Room(cam, top_l, top_r, bottom_l, Color(0,0,0));
-    Renderer text_renderer = Renderer(width, height, 0);
+    Renderer text_renderer = Renderer(tw, th, 0);
+    Renderer ppm_renderer = Renderer(width, height, 0);
     
-    Color c = Color(1,0,0);
-    Sphere s1 = Sphere(Vector3(-4, 0, -7), 1, c);
-    Sphere s2 = Sphere(Vector3(0, 0, -7), 2, c);
-    Sphere s3 = Sphere(Vector3(4, 0, -7), 1, c);
+    Color c = Color(0,.5,0);
+    Sphere s1 = Sphere(Vector3(-4, 0, -7), 1, &c);
+    Sphere s2 = Sphere(Vector3(0, 0, -7), 2, &c);
+    Sphere s3 = Sphere(Vector3(4, 0, -7), 1, &c);
     
     perspective_room.addObject(&s1);
     perspective_room.addObject(&s2);
     perspective_room.addObject(&s3);
     
     perspective_tracer.trace(&perspective_room, &text_renderer);
+    perspective_tracer.trace(&perspective_room, &ppm_renderer);
     
     text_renderer.render_text();
+    ppm_renderer.render_ppm();
     return 0;
 }

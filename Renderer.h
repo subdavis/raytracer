@@ -10,6 +10,7 @@ public:
     void set_pixel(int x, int y, Color c);
     Color get_pixel(int x, int y);
     void render_text();
+    void render_ppm();
     int width;
     int height;
 private:
