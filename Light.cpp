@@ -1,6 +1,7 @@
 #include "Light.h"
+Light::Light(){}
 
-Light::Light(Vector3 point, Vector3 direction, Color color) : Ray(point, direction), color(color)
+Light::Light(Vector3 point, Color color) : point(point), color(color)
 {
 }
 

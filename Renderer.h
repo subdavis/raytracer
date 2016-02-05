@@ -16,6 +16,7 @@ public:
 private:
     int rtype;
     int rowlen;
+    double top;
     Color *pixels;
 };
 

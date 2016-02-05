@@ -14,7 +14,7 @@ int Color::to_text(){
     return std::floor(r + g + b);
 }
 
-std::string Color::to_ppm(int max){
+std::string Color::to_ppm(double max){
     std::string ri = ntos(round(r * max));
     std::string gi = ntos(round(g * max));
     std::string bi = ntos(round(b * max));

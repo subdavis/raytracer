@@ -11,15 +11,17 @@
 #include "Vector3.h"
 #include "Renderer.h"
 #include "Tracer.h"
+#include "PhongProp.h"
 
 int unit_tests(){
     
     printf("Try Creating independent objects\n");
     Color c = Color(0, .5, .5);
-    Light l = Light(Vector3(0,0,0), Vector3(0,-1,0), c);
-    Plane p = Plane(Vector3(0,0,0), Vector3(0,1,0), c);
+    PhongProp pp = PhongProp(Vector3(.2,.2,.2), Vector3(1,1,1), Vector3(0,0,0), 0);
+    Light l = Light(Vector3(0,0,0), c);
+    Plane p = Plane(Vector3(0,0,0), Vector3(0,1,0), pp);
     Ray r = Ray(Vector3(0,0,-20), Vector3(0,0,1));
-    Sphere s = Sphere(Vector3(0,0,0), 2, c);
+    Sphere s = Sphere(Vector3(0,0,0), 2, pp);
     
     printf("Intersection at %.4f\n",s.intersect(&r));
     std::cout << c.ntos(255);
@@ -63,19 +65,25 @@ int main(int argc, char **argv)
     //Renderer text_renderer = Renderer(tw, th, 0);
     Renderer ppm_renderer = Renderer(width, height, 0);
     
-    Color c1 = Color(.5,0,0);
-    Color c2 = Color(0,.5,0);
-    Color c3 = Color(0,0,.5);
-    Color c4 = Color(.4,.4,.4);
-    Sphere s1 = Sphere(Vector3(-4, 0, -7), 1, c1);
-    Sphere s2 = Sphere(Vector3(0, 0, -7), 2, c2);
-    Sphere s3 = Sphere(Vector3(4, 0, -7), 1, c3);
-    Plane p1 = Plane(Vector3(0,2,0), Vector3(0,1,0), c4);
+    PhongProp pp1 = PhongProp(Vector3(.2,0,0), Vector3(1,0,0), Vector3(0,0,0), 0);
+    PhongProp pp2 = PhongProp(Vector3(0,.2,0), Vector3(0,.5,0), Vector3(.5,.5,.5), 32);
+    PhongProp pp3 = PhongProp(Vector3(0,0,.2), Vector3(0,0,1), Vector3(0,0,0), 0);
+    PhongProp pp4 = PhongProp(Vector3(.2,.2,.2), Vector3(1,1,1), Vector3(0,0,0), 0);
+    
+    Sphere s1 = Sphere(Vector3(-4, 0, -7), 1, pp1);
+    Sphere s2 = Sphere(Vector3(0, 0, -7), 2, pp2);
+    Sphere s3 = Sphere(Vector3(4, 0, -7), 1, pp3);
+    Plane p1 = Plane(Vector3(0,2,0), Vector3(0,-1,0), pp4);
+    
+    Light l1 = Light(Vector3(4, -4, -3), Color(1,1,1));
+    //Light l2 = Light(Vector3(-4, -4, -3), Color(1,1,1));
     
     perspective_room.addObject(&s1);
     perspective_room.addObject(&s2);
     perspective_room.addObject(&s3);
     perspective_room.addObject(&p1);
+    perspective_room.addLight(l1);
+    //perspective_room.addLight(l2);
     
     //perspective_tracer.trace(&perspective_room, &text_renderer);
     perspective_tracer.trace(&perspective_room, &ppm_renderer);

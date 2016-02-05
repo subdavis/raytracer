@@ -2,12 +2,14 @@
 #define DRAWABLE_H
 #include "Ray.h"
 #include "Color.h"
+#include "PhongProp.h"
 
 class Drawable
 {
 public:
     virtual double intersect(Ray *r) = 0;
-    virtual Color getColor() = 0;
+    virtual PhongProp getPhong() = 0;
+    virtual Vector3 getOrtho(Vector3 *point) = 0;
     virtual ~Drawable() {}
 //    Drawable();
 //    Drawable* parent;

@@ -2,14 +2,16 @@
 #define LIGHT_H
 
 #include "Color.h" // Base class: Ray
-#include "Ray.h"
+#include "Vector3.h"
 
-class Light : public Ray
+class Light
 {
 public:
-    Light(Vector3 point, Vector3 direction, Color color);
+    Light();
+    Light(Vector3 point, Color color);
     ~Light();
     Color color;
+    Vector3 point;
 
 };
 

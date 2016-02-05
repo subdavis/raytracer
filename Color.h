@@ -8,7 +8,7 @@ public:
     Color();
     Color(double r, double g, double b);
     int to_text();
-    std::string to_ppm(int max);
+    std::string to_ppm(double max);
     ~Color();
     double r;
     double g;

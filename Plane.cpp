@@ -1,22 +1,11 @@
 #include "Plane.h"
 
-Plane::Plane(Vector3 point, Vector3 ortho, Color c): 
-point(point), ortho(ortho), color(c)
+Plane::Plane(Vector3 point, Vector3 ortho, PhongProp phong): 
+point(point), ortho(ortho), phong(phong)
 {
 }
 
 double Plane::intersect(Ray *r){
-//    top = np.dot( (ray.point - self.point) , self.d )
-//        bottom = np.dot(ray.d, self.d)
-//        if bottom == 0:
-//            return (-1, None, False, None)       
-//        else:
-//            t = (-1 * top) / bottom
-//            if t > 0:       
-//                P = ray.point + t*(ray.d)
-//                return (t, P, True, self.d)
-//            else:
-//                return (-1, None, False, None)
     double top = r->point.minus(point).dot(ortho);
     double bottom = r->d.dot(ortho);
     if (bottom == 0){
@@ -31,8 +20,12 @@ double Plane::intersect(Ray *r){
     }
 }
 
-Color Plane::getColor(){
-    return color;
+PhongProp Plane::getPhong(){
+    return phong;
+}
+
+Vector3 Plane::getOrtho(Vector3 *point){
+    return ortho;
 }
 
 Plane::~Plane()

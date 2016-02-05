@@ -1,8 +1,8 @@
 #include "Sphere.h"
 #include <cmath>
 
-Sphere::Sphere(Vector3 center, double radius, Color c):
-center(center), radius(radius), color(c)
+Sphere::Sphere(Vector3 center, double radius, PhongProp phong):
+center(center), radius(radius), phong(phong)
 {
 }
 
@@ -31,15 +31,15 @@ double Sphere::intersect(Ray *r){
     }
 }
 
-Vector3 Sphere::Orthogonal(Vector3 point){
+Vector3 Sphere::getOrtho(Vector3 *point){
     //returns an orthogonal unit vector
+    return point->minus(center).Unit();
 }
 
-Color Sphere::getColor(){
-    return color;
+PhongProp Sphere::getPhong(){
+    return phong;
 }
 
 Sphere::~Sphere()
 {
 }
-

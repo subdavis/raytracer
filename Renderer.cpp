@@ -12,10 +12,18 @@ width(width), height(height), rtype(rtype)
     // 2 for color
     rowlen = width;
     pixels = new Color[width*height];
+    top = 0;
 }
 
 void Renderer::set_pixel(int x, int y, Color c){
     int dex = y * rowlen + x;
+    if (c.r > top){
+        top = c.r;
+    } else if (c.g > top) {
+        top = c.g;
+    } else if (c.b > top) {
+        top = c.b;
+    }
     pixels[dex] = c;
 }
 
@@ -34,6 +42,7 @@ void Renderer::render_text(){
 //    std::printf("done\n");
 }
 void Renderer::render_ppm(){
+    
     std::ofstream myfile;
     myfile.open ("out.ppm");
     myfile << "P3\n";
@@ -44,7 +53,7 @@ void Renderer::render_ppm(){
     for (int j=0; j<height; j++){
         for(int i=0; i<width; i++){
             Color text_color = get_pixel(i, j);
-            myfile << text_color.to_ppm(255) << " ";
+            myfile << text_color.to_ppm(255 / top) << " ";
         }
         myfile << "\n";
     }
