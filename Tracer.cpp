@@ -28,17 +28,11 @@ void Tracer::trace(Room *room, Renderer *r){
     PhongProp iphong;
     int shortest_index;
     //for light stuff
-    double ir=.5;
-    double ig=.5;
-    double ib=.5;
-    //ambient
-    double Iar;
-    double Iag;
-    double Iab;
-    //diffuse
-    double Idr;
-    double Idg;
-    double Idb;
+    //refactor colors into vectors
+    Vector3 I = Vector3(0,0,0);
+    Vector3 Ia;
+    Vector3 Id;
+    Vector3 Is;
     
     for(int j=0; j<r->height; j++){ // y
         for(int i=0; i<r->width; i++){ // x
@@ -65,38 +59,26 @@ void Tracer::trace(Room *room, Renderer *r){
                 ipoint = room->cam.point.add( ray.d.Scale(shortest) );
                 iortho = room->objs[shortest_index]->getOrtho(&ipoint);
                 iphong = room->objs[shortest_index]->getPhong();
+                
                 //iterate over the lights to get illumiation at the point
-                ir=0;
-                ig=0;
-                ib=0;
-                Iar = 0;
-                Iag = 0;
-                Iab = 0;
-                Idr = 0;
-                Idg = 0;
-                Idb = 0;
+                I = Vector3(0,0,0);
+                Ia = Vector3(0,0,0);
+                Id = Vector3(0,0,0);
                 for (int li=0; li<lights_tocheck;li++){
                     light = room->lights[li];
                     //ambient
-                    Iar += iphong.ka.x * light.color.r;
-                    Iag += iphong.ka.y * light.color.g;
-                    Iab += iphong.ka.z * light.color.b;
+                    Ia = Ia.add(Vector3(iphong.ka.x * light.color.r , iphong.ka.y * light.color.g, iphong.ka.z * light.color.b));
                     //diffuse
                     double dot = iortho.Unit().dot(light.point.minus(ipoint).Unit());
                     if (dot >= 0){
-                        Idr += iphong.kd.x * dot * light.color.r;
-                        Idg += iphong.kd.y * dot * light.color.g;
-                        Idb += iphong.kd.z * dot * light.color.b;
+                        Id = Id.add(Vector3(iphong.kd.x * dot * light.color.r , iphong.kd.y * dot * light.color.g , iphong.kd.z * dot * light.color.b));
                     } else {
-                        Idr, Idg, Idb = 0;
+                        Id = Id.add(Vector3(0,0,0));
                     }
-                     
                     //combine all the lights
-                    ir += Iar + Idr;
-                    ig += Iag + Idg;
-                    ib += Iab + Idb;
+                    I = I.add(Id).add(Ia);
                 }
-                r->set_pixel(i, j, Color(ir,ig,ib));
+                r->set_pixel(i, j, Color(I.x,I.y,I.z));
             }
         }
     }

@@ -73,6 +73,7 @@ int main(int argc, char **argv)
     Sphere s1 = Sphere(Vector3(-4, 0, -7), 1, pp1);
     Sphere s2 = Sphere(Vector3(0, 0, -7), 2, pp2);
     Sphere s3 = Sphere(Vector3(4, 0, -7), 1, pp3);
+    //MAKE SURE this is pointing in the right direction
     Plane p1 = Plane(Vector3(0,2,0), Vector3(0,-1,0), pp4);
     
     Light l1 = Light(Vector3(4, -4, -3), Color(1,1,1));
