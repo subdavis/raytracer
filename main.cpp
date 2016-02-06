@@ -77,10 +77,10 @@ int main(int argc, char **argv)
     //MAKE SURE this is pointing in the right direction
     s1.reflective = true;
     s1.reflect_index = .2;
-    s2.reflective = true;
-    s2.reflect_index = .2;
-    s3.reflective = true;
-    s3.reflect_index = .2;
+//    s2.reflective = true;
+//    s2.reflect_index = .2;
+//    s3.reflective = true;
+//    s3.reflect_index = .2;
     Plane p1 = Plane(Vector3(0,-2,0), Vector3(0,1,0), pp4);
     Plane p2 = Plane(Vector3(0,0,10), Vector3(0,0,-1), pp4);
     

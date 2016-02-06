@@ -33,7 +33,6 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
      * Declare the variables that will be set and reset during calls to this function
      */
     //data for objects and lights in the room
-    int dex;
     Drawable *iobj;
     Light ilight;
     //data for a given intersection point
@@ -88,10 +87,10 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             //Only run the rest of the lighting algo if there's a direct path to one of the lights
             direct_path = true;
             //Check the others
-            for(int o=0; o<objs_tocheck; o++){
-
+            for(int o=0; o< objs_tocheck; o++){
                 iobj = room->objs[o];
                 //make a unit ray from the intersect point, using a point just above the surface
+//TODO---->     Bug here - this should be the direct vector to the light
                 Ray r_to_light = Ray(ipoint.add(to_light.Scale(.01)), to_light);
                 compare = iobj->intersect(&r_to_light);
 //TODO---->     Make sure the intersect doesn't happen behind the light.  for now, we can assume that it wont.
@@ -112,15 +111,19 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
                     Id = Id.add(Vector3(0,0,0));
                 }
                 //specular
-                double sr = iphong.ks.x * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.r * falloff_scalar;
-                double sg = iphong.ks.y * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.g * falloff_scalar;
-                double sb = iphong.ks.z * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.b * falloff_scalar;
-                Is = Is.add(Vector3(sr, sg, sb));
+                //only do specular if this is the first recursion
+//TODO:--->     analyze this
+                if (depth == 0){
+                    double sr = iphong.ks.x * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.r * falloff_scalar;
+                    double sg = iphong.ks.y * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.g * falloff_scalar;
+                    double sb = iphong.ks.z * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.b * falloff_scalar;
+                    Is = Is.add(Vector3(sr, sg, sb));
+                }
             }
             //combine all the lights
             I = I.add(Id).add(Ia).add(Is);
             //try some reflection
-            if (room->objs[shortest_index]->is_reflective() && depth < 2){
+            if (room->objs[shortest_index]->is_reflective() && depth < 1){
                 depth++;
                 //get the reflect vector
                 //c1 = -dot_product( N, V )

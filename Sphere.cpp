@@ -10,7 +10,7 @@ center(center), radius(radius), phong(phong)
 
 double Sphere::intersect(Ray *r){
     //returns distance to the closest intersection
-    Vector3 d = r->d;
+    Vector3 d = r->d; //direction
     Vector3 e = r->point;
     Vector3 c = center;
     double R = radius;
@@ -23,12 +23,12 @@ double Sphere::intersect(Ray *r){
         return -1.0;
     }else{
         double d1 = (b + sqrt(inner_root)) / ddd;
-        double d2 = (b - sqrt(inner_root)) / ddd;
+        double d2 = (b - sqrt(inner_root)) / ddd; //should be shortest
         //perform for the shortest distance
-        if (d1 < d2 && d1 >= 0){
-            return d1;
-        } else if (d2 >= 0) {
+        if (d2 < d1 && d2 >= 0){
             return d2;
+        } else if (d1 >= 0) {
+            return d1;
         } else {
             return -1.0;
         }
