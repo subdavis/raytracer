@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     int height = 1000;
     int tw = 30;
     int th = 30;
-    Tracer perspective_tracer = Tracer(false, false, false);
+    Tracer perspective_tracer = Tracer(false, false);
     Room perspective_room = Room(cam, top_l, top_r, bottom_l, Color(0,0,0));
     //Renderer text_renderer = Renderer(tw, th, 0);
     Renderer ppm_renderer = Renderer(width, height, 0);
@@ -75,19 +75,25 @@ int main(int argc, char **argv)
     Sphere s3 = Sphere(Vector3(4, 0, -7), 1, pp3);
     Sphere s4 = Sphere(Vector3(0, 0, 7), 1, pp3);
     //MAKE SURE this is pointing in the right direction
+    s1.reflective = true;
+    s1.reflect_index = .2;
+    s2.reflective = true;
+    s2.reflect_index = .2;
+    s3.reflective = true;
+    s3.reflect_index = .2;
     Plane p1 = Plane(Vector3(0,-2,0), Vector3(0,1,0), pp4);
     Plane p2 = Plane(Vector3(0,0,10), Vector3(0,0,-1), pp4);
     
-    Light l1 = Light(Vector3(4, 4, -5), Color(.5,.1,.2));
-    Light l2 = Light(Vector3(-4, 4, -3), Color(1,1,1));
+    Light l1 = Light(Vector3(4, 4, -5), Color(10,.1,.2));
+    Light l2 = Light(Vector3(-4, 4, -3), Color(50,50,50));
     
     perspective_room.addObject(&s1);
     perspective_room.addObject(&s2);
     perspective_room.addObject(&s3);
-    perspective_room.addObject(&s4);
+    //perspective_room.addObject(&s4);
     perspective_room.addObject(&p1);
     //perspective_room.addObject(&p2);
-    perspective_room.addLight(l1);
+    //perspective_room.addLight(l1);
     perspective_room.addLight(l2);
     
     //perspective_tracer.trace(&perspective_room, &text_renderer);

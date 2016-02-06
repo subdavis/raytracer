@@ -4,6 +4,8 @@
 Sphere::Sphere(Vector3 center, double radius, PhongProp phong):
 center(center), radius(radius), phong(phong)
 {
+    reflect_index = 0;
+    reflective = false;
 }
 
 double Sphere::intersect(Ray *r){
@@ -45,6 +47,12 @@ PhongProp Sphere::getPhong(){
 Vector3 Sphere::point_above(Vector3 *point){
     Vector3 ortho = getOrtho(point).Scale(radius * 1.01);
     return center.add(ortho);
+}
+bool Sphere::is_reflective(){
+    return reflective;
+}
+double Sphere::get_reflect(){
+    return reflect_index;
 }
 
 Sphere::~Sphere()

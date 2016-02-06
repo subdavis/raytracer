@@ -1,6 +1,6 @@
 #include "PerspectiveTracer.h"
 
-PerspectiveTracer::PerspectiveTracer(bool antialias, bool lighting, bool shadows): Tracer(antialias, lighting, shadows)
+PerspectiveTracer::PerspectiveTracer(bool antialias, bool lighting): Tracer(antialias, lighting)
 {
 }
 

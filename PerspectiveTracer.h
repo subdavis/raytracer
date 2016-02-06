@@ -6,7 +6,7 @@
 class PerspectiveTracer : public Tracer
 {
 public:
-    PerspectiveTracer(bool antialias, bool lighting, bool shadows);
+    PerspectiveTracer(bool antialias, bool lighting);
     ~PerspectiveTracer();
 
 };

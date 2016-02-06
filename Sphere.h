@@ -15,12 +15,16 @@ public:
     virtual PhongProp getPhong();
     Vector3 getOrtho(Vector3 *point);
     Vector3 point_above(Vector3 *point);
+    bool is_reflective();
+    double get_reflect();
     ~Sphere();
     
     Vector3 center;
     double radius;
     Color color;
     PhongProp phong;
+    bool reflective;
+    double reflect_index;
 };
 
 #endif // SPHERE_H

@@ -15,10 +15,14 @@ public:
     Vector3 getOrtho(Vector3 *point);
     Vector3 point_above(Vector3 *point);
     virtual double intersect(Ray *r);
+    virtual double get_reflect();
+    virtual bool is_reflective();
     ~Plane();
     Vector3 point;
     Vector3 ortho;
     PhongProp phong;
+    bool reflective;
+    double reflect_index;
 
 };
 

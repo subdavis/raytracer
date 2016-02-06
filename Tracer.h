@@ -8,13 +8,17 @@
 class Tracer
 {
 public:
-    Tracer(bool antialias, bool lighting, bool shadows);
+    Tracer(bool antialias, bool lighting);
     ~Tracer();
     void trace(Room *room, Renderer *renderer);
-    Color recursive_trace(Ray start_ray);
+    Color recursive_trace(Ray start_ray, Room *room, Renderer *r);
     bool antialias;
     bool lighting;
-    bool shadows;
+    bool falloff;
+    //Some data the recursive tracer needs
+    int objs_tocheck;
+    int lights_tocheck;
+    int depth;
 };
 
 #endif // TRACER_H
