@@ -75,24 +75,20 @@ void Tracer::trace(Room *room, Renderer *r){
                     direct_path = true;
                     //Check the others
                     for(int o=0; o<objs_tocheck; o++){
-//                        //we don't want to check ourself.  Just the othre objects
-//                        if (o != shortest_index){
-                            obj = room->objs[o];
-                            //make a unit ray from the intersect point toward the light
-                            Ray r_to_light = Ray(ipoint.add(to_light.Scale(.01)), to_light);
-                            compare = obj->intersect(&r_to_light);
-                            //TODO: Make sure the intersect doesn't happen behind the light.  for now, we can assume that it wont.
-                            if (compare == -1.0){
-                                //there is a direct path to the current light.
-                            } else {
-                                //something was in the way.  Don't do anything else right now.
-                                direct_path = false;
-                            }
-//                        }
+
+                        obj = room->objs[o];
+                        //make a unit ray from the intersect point, using a point just above the surface
+                        Ray r_to_light = Ray(ipoint.add(to_light.Scale(.01)), to_light);
+                        compare = obj->intersect(&r_to_light);
+//TODO---->             Make sure the intersect doesn't happen behind the light.  for now, we can assume that it wont.
+                        if (compare == -1.0){
+                            //there is a direct path to the current light.
+                        } else {
+                            //something was in the way.  Don't do anything else right now.
+                            direct_path = false;
+                        }
                     }
-                    //do this after we check all the objects
-                    //KNOWN BUG : insides of spheres are shiny
-                    // Fix by checking every object and moving the check point away from the sphere
+                    // do this after we check all the objects
                     if (direct_path){
                         //diffuse
                         double dot = iortho.Unit().dot(to_light);
@@ -114,6 +110,10 @@ void Tracer::trace(Room *room, Renderer *r){
             }
         }
     }
+}
+
+Color Tracer::recursive_trace(Ray start_ray){
+    
 }
 
 Tracer::~Tracer(){}
