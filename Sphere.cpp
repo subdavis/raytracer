@@ -28,7 +28,10 @@ double Sphere::intersect(Ray *r){
         if (d2 < d1 && d2 >= 0){
             return d2;
         } else if (d1 >= 0) {
-            return d1;
+            //we must be inside the sphere
+            //return d2, because it will give us the distance to the nearest wall
+            //d2 will be negative.
+            return d2;
         } else {
             return -1;
         }

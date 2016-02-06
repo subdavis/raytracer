@@ -7,7 +7,7 @@
 Tracer::Tracer(bool antialias, bool lighting): 
 antialias(antialias), lighting(lighting){
     depth = 0;
-    falloff = false;
+    falloff = true;
 }
 
 void Tracer::trace(Room *room, Renderer *r){
@@ -69,6 +69,8 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
         ipoint = start_ray.point.add( start_ray.d.Scale(shortest) );
         iortho = room->objs[shortest_index]->getOrtho(&ipoint);
         iphong = room->objs[shortest_index]->getPhong();
+        //needed
+        bool inside_sphere = false;
         
         //iterate over the lights to get illumiation at the point
         I = Ia = Id = Is = Vector3(0,0,0);
@@ -78,7 +80,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             double distance_to_light = ilight.point.minus(ipoint).Magnitude();
             double falloff_scalar = 1;
             if (falloff){
-                falloff_scalar = 1/ pow(distance_to_light, 2);
+                falloff_scalar = 1/pow(distance_to_light, 2);
             }
             Vector3 reflect = iortho.Unit().Scale(2 * (iortho.Unit().dot(to_light))).minus(to_light).Unit();
             Vector3 to_eye = start_ray.d.Scale(-1);
@@ -99,6 +101,10 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
                 } else {
                     //something was in the way.  Don't do anything else right now.
                     direct_path = false;
+                    
+                    if (compare < 0){
+                        inside_sphere = true;
+                    }
                 }
             }
             // do this after we check all the objects
@@ -122,18 +128,18 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             }
             //combine all the lights
             I = I.add(Id).add(Ia).add(Is);
-            //try some reflection
-            if (room->objs[shortest_index]->is_reflective() && depth < 5){
-                depth++;
-                //get the reflect vector
-                //c1 = -dot_product( N, V )
-                //Rl = V + (2 * N * c1 )
-                double c1 = -1 * iortho.dot(start_ray.d);
-                Vector3 ref_u = start_ray.d.add(iortho.Scale(2*c1)).Unit();
-                Ray ref_r = Ray(ipoint, ref_u);
-                Color result = recursive_trace(ref_r, room, r);
-                I = I.add( Vector3(result.r, result.g, result.b).Scale( room->objs[shortest_index]->get_reflect() ));
-            }
+        }
+        //try some reflection
+        if (room->objs[shortest_index]->is_reflective() && depth < 5 && !inside_sphere){
+            depth++;
+            //get the reflect vector
+            //c1 = -dot_product( N, V )
+            //Rl = V + (2 * N * c1 )
+            double c1 = -1 * iortho.dot(start_ray.d);
+            Vector3 ref_u = start_ray.d.add(iortho.Scale(2*c1)).Unit();
+            Ray ref_r = Ray(ipoint.add(ref_u.Scale(.0001)), ref_u);
+            Color result = recursive_trace(ref_r, room, r);
+            I = I.add( Vector3(result.r, result.g, result.b).Scale( room->objs[shortest_index]->get_reflect() ));
         }
         return Color(I.x,I.y,I.z);
     }

@@ -56,8 +56,8 @@ int main(int argc, char **argv)
     Vector3 top_r = Vector3(.1,.1,-.1);
     
     printf("Now Try Rendering a real room\n");
-    int width = 1000;
-    int height = 1000;
+    int width = 2000;
+    int height = 2000;
     int tw = 30;
     int th = 30;
     Tracer perspective_tracer = Tracer(false, false);
@@ -75,14 +75,16 @@ int main(int argc, char **argv)
     Sphere s3 = Sphere(Vector3(4, 0, -7), 1, pp3);
     Sphere s4 = Sphere(Vector3(0, 0, 7), 1, pp3);
     //MAKE SURE this is pointing in the right direction
-//    s1.reflective = true;
-//    s1.reflect_index = .2;
+    s1.reflective = true;
+    s1.reflect_index = .2;
     s2.reflective = true;
-    s2.reflect_index = .2;
+    s2.reflect_index = .3;
+    s3.reflective = true;
+    s3.reflect_index = .2;
     Plane p1 = Plane(Vector3(0,-2,0), Vector3(0,1,0), pp4);
     Plane p2 = Plane(Vector3(0,0,10), Vector3(0,0,-1), pp4);
     p1.reflective = true;
-    p1.reflect_index = .2;
+    p1.reflect_index = .1;
     
     Light l1 = Light(Vector3(4, 4, -5), Color(10,.1,.2));
     Light l2 = Light(Vector3(-4, 4, -3), Color(50,50,50));
@@ -93,7 +95,7 @@ int main(int argc, char **argv)
     //perspective_room.addObject(&s4);
     perspective_room.addObject(&p1);
     //perspective_room.addObject(&p2);
-    //perspective_room.addLight(l1);
+    perspective_room.addLight(l1);
     perspective_room.addLight(l2);
     
     //perspective_tracer.trace(&perspective_room, &text_renderer);
