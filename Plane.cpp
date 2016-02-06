@@ -27,6 +27,9 @@ PhongProp Plane::getPhong(){
 Vector3 Plane::getOrtho(Vector3 *point){
     return ortho;
 }
+Vector3 Plane::point_above(Vector3 *point){
+    return point->add(ortho.Scale(.01));
+}
 
 Plane::~Plane()
 {

@@ -13,6 +13,7 @@ public:
     Plane(Vector3 point, Vector3 ortho, PhongProp phong);
     virtual PhongProp getPhong();
     Vector3 getOrtho(Vector3 *point);
+    Vector3 point_above(Vector3 *point);
     virtual double intersect(Ray *r);
     ~Plane();
     Vector3 point;

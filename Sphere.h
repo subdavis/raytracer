@@ -14,6 +14,7 @@ public:
     virtual double intersect(Ray *r);
     virtual PhongProp getPhong();
     Vector3 getOrtho(Vector3 *point);
+    Vector3 point_above(Vector3 *point);
     ~Sphere();
     
     Vector3 center;

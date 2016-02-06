@@ -29,6 +29,7 @@ void Tracer::trace(Room *room, Renderer *r){
     PhongProp iphong;
     int shortest_index;
     //for light stuff
+    bool direct_path;
     //refactor colors into vectors
     Vector3 I = Vector3(0,0,0);
     Vector3 Ia;
@@ -64,25 +65,48 @@ void Tracer::trace(Room *room, Renderer *r){
                 //iterate over the lights to get illumiation at the point
                 I = Ia = Id = Is = Vector3(0,0,0);
                 for (int li=0; li<lights_tocheck;li++){
-                    
                     light = room->lights[li];
                     Vector3 to_light = light.point.minus(ipoint).Unit();
                     Vector3 reflect = iortho.Unit().Scale(2 * (iortho.Unit().dot(to_light))).minus(to_light).Unit();
                     Vector3 to_eye = ray.d.Scale(-1);
-                    //ambient
+                    //ambient - don't put this under the floor.  That's bad.
                     Ia = Ia.add(Vector3(iphong.ka.x * light.color.r , iphong.ka.y * light.color.g, iphong.ka.z * light.color.b));
-                    //diffuse
-                    double dot = iortho.Unit().dot(to_light);
-                    if (dot >= 0){
-                        Id = Id.add(Vector3(iphong.kd.x * dot * light.color.r , iphong.kd.y * dot * light.color.g , iphong.kd.z * dot * light.color.b));
-                    } else {
-                        Id = Id.add(Vector3(0,0,0));
+                    //Only run the rest of the lighting algo if there's a direct path to one of the lights
+                    direct_path = true;
+                    //Check the others
+                    for(int o=0; o<objs_tocheck; o++){
+//                        //we don't want to check ourself.  Just the othre objects
+//                        if (o != shortest_index){
+                            obj = room->objs[o];
+                            //make a unit ray from the intersect point toward the light
+                            Ray r_to_light = Ray(ipoint.add(to_light.Scale(.01)), to_light);
+                            compare = obj->intersect(&r_to_light);
+                            //TODO: Make sure the intersect doesn't happen behind the light.  for now, we can assume that it wont.
+                            if (compare == -1.0){
+                                //there is a direct path to the current light.
+                            } else {
+                                //something was in the way.  Don't do anything else right now.
+                                direct_path = false;
+                            }
+//                        }
                     }
-                    //specular
-                    double sr = iphong.ks.x * pow( (reflect.dot(to_eye)), iphong.spower) * light.color.r;
-                    double sg = iphong.ks.y * pow( (reflect.dot(to_eye)), iphong.spower) * light.color.g;
-                    double sb = iphong.ks.z * pow( (reflect.dot(to_eye)), iphong.spower) * light.color.b;
-                    Is = Is.add(Vector3(sr, sg, sb));
+                    //do this after we check all the objects
+                    //KNOWN BUG : insides of spheres are shiny
+                    // Fix by checking every object and moving the check point away from the sphere
+                    if (direct_path){
+                        //diffuse
+                        double dot = iortho.Unit().dot(to_light);
+                        if (dot >= 0){
+                            Id = Id.add(Vector3(iphong.kd.x * dot * light.color.r , iphong.kd.y * dot * light.color.g , iphong.kd.z * dot * light.color.b));
+                        } else {
+                            Id = Id.add(Vector3(0,0,0));
+                        }
+                        //specular
+                        double sr = iphong.ks.x * pow( (reflect.dot(to_eye)), iphong.spower) * light.color.r;
+                        double sg = iphong.ks.y * pow( (reflect.dot(to_eye)), iphong.spower) * light.color.g;
+                        double sb = iphong.ks.z * pow( (reflect.dot(to_eye)), iphong.spower) * light.color.b;
+                        Is = Is.add(Vector3(sr, sg, sb));
+                    }
                     //combine all the lights
                     I = I.add(Id).add(Ia).add(Is);
                 }

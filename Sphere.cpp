@@ -23,10 +23,12 @@ double Sphere::intersect(Ray *r){
         double d1 = (b + sqrt(inner_root)) / ddd;
         double d2 = (b - sqrt(inner_root)) / ddd;
         //perform for the shortest distance
-        if (d1 < d2){
+        if (d1 < d2 && d1 >= 0){
             return d1;
-        } else {
+        } else if (d2 >= 0) {
             return d2;
+        } else {
+            return -1.0;
         }
     }
 }
@@ -38,6 +40,11 @@ Vector3 Sphere::getOrtho(Vector3 *point){
 
 PhongProp Sphere::getPhong(){
     return phong;
+}
+
+Vector3 Sphere::point_above(Vector3 *point){
+    Vector3 ortho = getOrtho(point).Scale(radius * 1.01);
+    return center.add(ortho);
 }
 
 Sphere::~Sphere()
