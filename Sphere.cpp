@@ -20,7 +20,7 @@ double Sphere::intersect(Ray *r){
     double inner_root = pow(d.dot(emc),2) - (ddd * ( emc.dot(emc) - pow(R, 2)));
     if (inner_root < 0){
         //an intersection was not found
-        return -1.0;
+        return -1;
     }else{
         double d1 = (b + sqrt(inner_root)) / ddd;
         double d2 = (b - sqrt(inner_root)) / ddd; //should be shortest
@@ -30,7 +30,7 @@ double Sphere::intersect(Ray *r){
         } else if (d1 >= 0) {
             return d1;
         } else {
-            return -1.0;
+            return -1;
         }
     }
 }

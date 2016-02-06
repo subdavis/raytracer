@@ -23,6 +23,7 @@ void Tracer::trace(Room *room, Renderer *r){
     for(int j=0; j<r->height; j++){ // y
         for(int i=0; i<r->width; i++){ // x
             dex = j * r->width + i;
+            depth = 0;
             r->set_pixel(i,j, recursive_trace(rays[dex], room, r) );
         }
     }
@@ -45,23 +46,22 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
     //for light stuff
     bool direct_path;
     Vector3 I;
-    Vector3 Ia;
-    Vector3 Id;
-    Vector3 Is;
+    Vector3 Ia = Vector3(0,0,0);
+    Vector3 Id = Vector3(0,0,0);
+    Vector3 Is = Vector3(0,0,0);
     //iterate over the items in the scene and get the closest intersection.
-    shortest = -1.0;
-    depth = 0;
+    shortest = -1;
     for(int o=0; o<objs_tocheck; o++){
         iobj = room->objs[o];
         compare = iobj->intersect(&start_ray);
-        if (compare != -1.0){
-            if (compare < shortest || shortest == -1.0){
+        if (compare != -1){
+            if (compare < shortest || shortest == -1){
                 shortest = compare;
                 shortest_index = o;
             }
         }
     }
-    if (shortest == -1.0){
+    if (shortest == -1){
         //we didn't find an intersection
         return room->bg;
     } else {
@@ -91,10 +91,10 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
                 iobj = room->objs[o];
                 //make a unit ray from the intersect point, using a point just above the surface
 //TODO---->     Bug here - this should be the direct vector to the light
-                Ray r_to_light = Ray(ipoint.add(to_light.Scale(.01)), to_light);
+                Ray r_to_light = Ray(ipoint.add(iortho.Scale(.01)), to_light);
                 compare = iobj->intersect(&r_to_light);
 //TODO---->     Make sure the intersect doesn't happen behind the light.  for now, we can assume that it wont.
-                if (compare == -1.0){
+                if (compare == -1){
                     //there is a direct path to the current light.
                 } else {
                     //something was in the way.  Don't do anything else right now.
@@ -113,17 +113,17 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
                 //specular
                 //only do specular if this is the first recursion
 //TODO:--->     analyze this
-                if (depth == 0){
+//                if (depth == 0){
                     double sr = iphong.ks.x * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.r * falloff_scalar;
                     double sg = iphong.ks.y * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.g * falloff_scalar;
                     double sb = iphong.ks.z * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.b * falloff_scalar;
                     Is = Is.add(Vector3(sr, sg, sb));
-                }
+//                }
             }
             //combine all the lights
             I = I.add(Id).add(Ia).add(Is);
             //try some reflection
-            if (room->objs[shortest_index]->is_reflective() && depth < 1){
+            if (room->objs[shortest_index]->is_reflective() && depth < 5){
                 depth++;
                 //get the reflect vector
                 //c1 = -dot_product( N, V )

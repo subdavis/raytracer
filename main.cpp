@@ -75,14 +75,14 @@ int main(int argc, char **argv)
     Sphere s3 = Sphere(Vector3(4, 0, -7), 1, pp3);
     Sphere s4 = Sphere(Vector3(0, 0, 7), 1, pp3);
     //MAKE SURE this is pointing in the right direction
-    s1.reflective = true;
-    s1.reflect_index = .2;
-//    s2.reflective = true;
-//    s2.reflect_index = .2;
-//    s3.reflective = true;
-//    s3.reflect_index = .2;
+//    s1.reflective = true;
+//    s1.reflect_index = .2;
+    s2.reflective = true;
+    s2.reflect_index = .2;
     Plane p1 = Plane(Vector3(0,-2,0), Vector3(0,1,0), pp4);
     Plane p2 = Plane(Vector3(0,0,10), Vector3(0,0,-1), pp4);
+    p1.reflective = true;
+    p1.reflect_index = .2;
     
     Light l1 = Light(Vector3(4, 4, -5), Color(10,.1,.2));
     Light l2 = Light(Vector3(-4, 4, -3), Color(50,50,50));
