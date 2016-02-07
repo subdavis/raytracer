@@ -65,10 +65,10 @@ int main(int argc, char **argv)
 
     Tracer perspective_tracer = Tracer(true, false);
     Room perspective_room = Room(cam, top_l, top_r, bottom_l, Color(0,0,0));
-    Renderer ppm_renderer = Renderer(width, height, 0, false, 1);
+    Renderer ppm_renderer = Renderer(width, height, 0, false, 10);
     
-    PhongProp pp1 = PhongProp(Vector3(.2,0,0), Vector3(1,0,0), Vector3(.2,.1,.2), 20);
-    PhongProp pp2 = PhongProp(Vector3(0,0,0), Vector3(.5,.5,.5), Vector3(.8,.8,.8), 32);
+    PhongProp pp1 = PhongProp(Vector3(.2,0,0), Vector3(1,0,0), Vector3(0,0,0),0);
+    PhongProp pp2 = PhongProp(Vector3(0,.2,0), Vector3(0,.5,0), Vector3(.5,.5,.5), 32);
     PhongProp pp3 = PhongProp(Vector3(0,0,.2), Vector3(0,0,1), Vector3(0,0,0), 0);
     PhongProp pp4 = PhongProp(Vector3(.2,.2,.2), Vector3(1,1,1), Vector3(0,0,0), 0);
     PhongProp pp5 = PhongProp(Vector3(0,.2,.1), Vector3(.5,1,1), Vector3(0,0,0), 0);

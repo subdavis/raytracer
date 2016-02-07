@@ -3,13 +3,18 @@
 #include <cstdio>
 #include <fstream>
 
-Renderer::Renderer(int width, int height, int rtype, bool antialias, int sample_index): 
-width(width), height(height), rtype(rtype), antialias(antialias), sample_index(sample_index)
+Renderer::Renderer(int width, int height, int rtype, bool antialias, int s_index): 
+width(width), height(height), rtype(rtype), antialias(antialias)
 {
     //Type is:
     // 0 for black and white
     // 1 for grayscale
     // 2 for color
+    if (!antialias){
+        sample_index = 1;
+    } else {
+        sample_index = s_index;
+    }
     rowlen = width * sample_index;
     pixels = new Color[width*height*sample_index*sample_index];
     top = 0;
