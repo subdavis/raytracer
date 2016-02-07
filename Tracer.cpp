@@ -15,10 +15,6 @@ void Tracer::trace(Room *room, Renderer *renderer){
     int height = renderer->height * renderer->sample_index;
     //generate the 2d array of rays through the camera and each pixel
     Ray *rays = room->find_pixel_points(renderer);
-    //in case antialiasing is necessary
-    //double pixel_w = room->step_x / 2;
-    //double pixel_h = room->step_y / 2;
-    //Color sum;
     //data for objects and lights in the room
     objs_tocheck = room->objs.size();
     lights_tocheck = room->lights.size();
@@ -90,7 +86,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             //ambient - don't put this under the floor.  That's bad.
             Vector3 Iacolor = Vector3(iphong.ka.x * ilight.color.r , iphong.ka.y * ilight.color.g, iphong.ka.z * ilight.color.b);
             Ia = Ia.add(Iacolor);
-            Ia = Ia.Scale(falloff);
+            Ia = Ia.Scale(falloff_scalar);
             //Only run the rest of the lighting algo if there's a direct path to one of the lights
             direct_path = true;
             

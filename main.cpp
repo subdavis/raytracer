@@ -52,16 +52,16 @@ int main(int argc, char **argv)
     
     Ray cam = Ray(Vector3(0,0,0), Vector3(0,0,-1));
     //original view.  Hang on to these.
-    //Vector3 top_l = Vector3(-.1,.1,-.1);
-    //Vector3 bottom_l = Vector3(-.1,-.1,-.1);
-    //Vector3 top_r = Vector3(.1,.1,-.1);
-    Vector3 top_l = Vector3(-.17,.1,-.1);
-    Vector3 bottom_l = Vector3(-.17,-.1,-.1);
-    Vector3 top_r = Vector3(.17,.1,-.1);
+    Vector3 top_l = Vector3(-.1,.1,-.1);
+    Vector3 bottom_l = Vector3(-.1,-.1,-.1);
+    Vector3 top_r = Vector3(.1,.1,-.1);
+    //Vector3 top_l = Vector3(-.17,.1,-.1);
+    //Vector3 bottom_l = Vector3(-.17,-.1,-.1);
+    //Vector3 top_r = Vector3(.17,.1,-.1);
     
     printf("Now Try Rendering a real room\n");
-    int width = 1600;
-    int height = 900;
+    int width = 1000;
+    int height = 1000;
 
     Tracer perspective_tracer = Tracer(true, false);
     Room perspective_room = Room(cam, top_l, top_r, bottom_l, Color(0,0,0));
@@ -79,17 +79,17 @@ int main(int argc, char **argv)
     Sphere s4 = Sphere(Vector3(0, 0, 7), 5, pp3);
     Sphere s5 = Sphere(Vector3(0, 4, -6), 1.5, pp5);
     
-    s1.reflective = true;
+    s1.reflective = false;
     s1.reflect_index = 1;
     s2.reflective = false;
     s2.reflect_index = 1;
-    s3.reflective = true;
+    s3.reflective = false;
     s3.reflect_index = .2;
     
     //MAKE SURE this is pointing in the right direction
     Plane p1 = Plane(Vector3(0,-2,0), Vector3(0,1,0), pp4);
     Plane p2 = Plane(Vector3(0,0,10), Vector3(0,0,-1), pp4);
-    p1.reflective = true;
+    p1.reflective = false;
     p1.reflect_index = .1;
     
     Light l1 = Light(Vector3(4, 4, -5), Color(70,50,40));
@@ -98,8 +98,8 @@ int main(int argc, char **argv)
     perspective_room.addObject(&s1);
     perspective_room.addObject(&s2);
     perspective_room.addObject(&s3);
-    perspective_room.addObject(&s4);
-    perspective_room.addObject(&s5);
+    //perspective_room.addObject(&s4);
+    //perspective_room.addObject(&s5);
     perspective_room.addObject(&p1);
     //perspective_room.addObject(&p2);
     perspective_room.addLight(l1);
