@@ -75,9 +75,9 @@ int main(int argc, char **argv)
     Sphere s3 = Sphere(Vector3(4, 0, -7), 1, pp3);
     Sphere s4 = Sphere(Vector3(0, 0, 7), 1, pp3);
     //MAKE SURE this is pointing in the right direction
-    s1.reflective = true;
+    s1.reflective = false;
     s1.reflect_index = .2;
-    s2.reflective = true;
+    s2.reflective = false;
     s2.reflect_index = .2;
     s3.reflective = true;
     s3.reflect_index = .2;
