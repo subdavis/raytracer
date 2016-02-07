@@ -1,5 +1,6 @@
 #include "Room.h"
 #include <cmath> 
+#include <cstdlib>
 
 Room::Room(Ray cam, Vector3 top_l, Vector3 top_r, Vector3 bottom_l, Color bg): 
 cam(cam), top_l(top_l), top_r(top_r), bottom_l(bottom_l), bg(bg)
@@ -16,7 +17,13 @@ void Room::addLight(Light l){
     lights.push_back(l);
 }
 
-Ray* Room::find_pixel_points(int width, int height){
+Ray* Room::find_pixel_points(Renderer *renderer){
+    int width = renderer->width;
+    int height = renderer->height;
+    if (renderer->antialias){
+        width *= renderer->sample_index;
+        height *= renderer->sample_index;
+    }
     
     //direction from left to right in view frame
     Vector3 v_right = top_r.minus(top_l);
@@ -25,8 +32,8 @@ Ray* Room::find_pixel_points(int width, int height){
     Vector3 v_down = bottom_l.minus(top_l);
     Vector3 u_down = v_down.Unit();
     //step scalars for each pixel
-    double step_x = std::abs(v_right.Scale(1.0/width).Magnitude());
-    double step_y = std::abs(v_down.Scale(1.0/height).Magnitude());
+    step_x = std::abs(v_right.Scale(1.0/width).Magnitude());
+    step_y = std::abs(v_down.Scale(1.0/height).Magnitude());
     
     Ray *rays = new Ray[width * height];
     
@@ -42,6 +49,10 @@ Ray* Room::find_pixel_points(int width, int height){
         }
     }
     return rays;
+}
+
+double Room::getRandom(double max){
+    return static_cast <double> (rand()) / static_cast <double> (max);
 }
 
 Room::~Room()

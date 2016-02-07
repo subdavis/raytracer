@@ -5,6 +5,7 @@
 #include "Drawable.h"
 #include "Light.h"
 #include "Color.h"
+#include "Renderer.h"
 #include <vector>
 using std::vector;
 
@@ -18,9 +19,13 @@ public:
     
     vector<Drawable*> objs;
     vector<Light> lights;
-    Ray* find_pixel_points(int width, int height);
+    Ray* find_pixel_points(Renderer *renderer);
+    double getRandom(double max);
+    
     Color bg;
     Ray cam;
+    double step_x;
+    double step_y;
     
 private:
     Vector3 bottom_l;

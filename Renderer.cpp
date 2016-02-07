@@ -3,15 +3,15 @@
 #include <cstdio>
 #include <fstream>
 
-Renderer::Renderer(int width, int height, int rtype): 
-width(width), height(height), rtype(rtype)
+Renderer::Renderer(int width, int height, int rtype, bool antialias, int sample_index): 
+width(width), height(height), rtype(rtype), antialias(antialias), sample_index(sample_index)
 {
     //Type is:
     // 0 for black and white
     // 1 for grayscale
     // 2 for color
-    rowlen = width;
-    pixels = new Color[width*height];
+    rowlen = width * sample_index;
+    pixels = new Color[width*height*sample_index*sample_index];
     top = 0;
 }
 
@@ -52,8 +52,24 @@ void Renderer::render_ppm(){
     myfile << "\n255\n";
     for (int j=0; j<height; j++){
         for(int i=0; i<width; i++){
-            Color text_color = get_pixel(i, j);
-            myfile << text_color.to_ppm(255 / top) << " ";
+            Color pcolor;
+            
+            if (antialias){
+                Color sum;
+                for (int si=0;si<sample_index;si++){
+                    for(int sj=0; sj<sample_index;sj++){
+                        //dex = sample^2 * width * y + sj * width * sample + x * sample + si
+                        int dex = sample_index * sample_index * j * width + sj * width * sample_index + i * sample_index + si;
+                        Color sample = pixels[dex];
+                        sum = Color(sample.r + sum.r, sample.g + sum.g, sample.b + sum.b);
+                    }
+                }
+                double ssquared = sample_index * sample_index * 1.0;
+                pcolor = Color(sum.r / ssquared, sum.g / ssquared, sum.b / ssquared);
+            } else {
+                pcolor = get_pixel(i, j);
+            }
+            myfile << pcolor.to_ppm(255 / top) << " ";
         }
         myfile << "\n";
     }
