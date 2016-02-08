@@ -18,12 +18,8 @@ void Room::addLight(Light l){
 }
 
 Ray* Room::find_pixel_points(Renderer *renderer){
-    int width = renderer->width;
-    int height = renderer->height;
-    if (renderer->antialias){
-        width *= renderer->sample_index;
-        height *= renderer->sample_index;
-    }
+    int width = renderer->getWidth();
+    int height = renderer->getHeight();
     
     //direction from left to right in view frame
     Vector3 v_right = top_r.minus(top_l);

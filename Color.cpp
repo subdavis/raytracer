@@ -11,7 +11,7 @@ Color::Color(double r, double g, double b): r(r), g(g), b(b)
 }
 
 int Color::to_text(){
-    return std::floor(r + g + b);
+    return r + g + b > 0 ? 7 : 0;
 }
 
 std::string Color::to_ppm(double max){

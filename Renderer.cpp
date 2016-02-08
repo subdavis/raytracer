@@ -46,10 +46,10 @@ void Renderer::render_text(){
     }
 //    std::printf("done\n");
 }
-void Renderer::render_ppm(){
+void Renderer::render_ppm(char *filename){
     
     std::ofstream myfile;
-    myfile.open ("out.ppm");
+    myfile.open (filename);
     myfile << "P3\n";
     myfile << width;
     myfile << " ";
@@ -79,6 +79,14 @@ void Renderer::render_ppm(){
         myfile << "\n";
     }
     myfile.close();
+    
+    std::cout << "Rendered to file\n" << std::endl;
+}
+int Renderer::getHeight(){
+    return height * sample_index;
+}
+int Renderer::getWidth(){
+    return height * sample_index;
 }
 
 Renderer::~Renderer()

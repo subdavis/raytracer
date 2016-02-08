@@ -17,9 +17,10 @@ public:
     bool falloff;
     int sample_index;
     //Some data the recursive tracer needs
-    int objs_tocheck;
-    int lights_tocheck;
+    int num_objects;
+    int num_lights;
     int depth;
+    int max_depth;
 };
 
 #endif // TRACER_H
