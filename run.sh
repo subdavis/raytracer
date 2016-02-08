@@ -1,3 +1,2 @@
-/Build/RayTracer
-xdg-open out.ppm
-
+./Build/RayTracer &&
+xdg-open Images/

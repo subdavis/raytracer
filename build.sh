@@ -1,4 +1,5 @@
-mkdir Build
+mkdir -p Build
+mkdir -p Images
 g++  -c  "main.cpp" -g -O0 -Wall  -o ./Build/main.cpp.o -I. -I.
 g++  -c  "Vector3.cpp" -g -O0 -Wall  -o ./Build/Vector3.cpp.o -I. -I.
 g++  -c  "Ray.cpp" -g -O0 -Wall  -o ./Build/Ray.cpp.o -I. -I.
