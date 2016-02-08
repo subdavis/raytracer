@@ -12,7 +12,8 @@ g++  -c  "Renderer.cpp" -g -O0 -Wall  -o ./Build/Renderer.cpp.o -I. -I.
 g++  -c  "Tracer.cpp" -g -O0 -Wall  -o ./Build/Tracer.cpp.o -I. -I.
 g++  -c  "PhongProp.cpp" -g -O0 -Wall  -o ./Build/PhongProp.cpp.o -I. -I.
 g++ -o ./Build/RayTracer ./Build/main.cpp.o ./Build/Vector3.cpp.o ./Build/Ray.cpp.o ./Build/Light.cpp.o ./Build/Color.cpp.o ./Build/Room.cpp.o ./Build/Sphere.cpp.o ./Build/Plane.cpp.o ./Build/Renderer.cpp.o ./Build/Tracer.cpp.o ./Build/PhongProp.cpp.o -L.
-echo "==========================================="
-echo "Build completed"
-echo "If the build was successful, you may run ./run.sh"
-echo "==========================================="
+echo "<<============================================================>>"
+echo "   Build completed"
+echo "   If the build was successful, you may run ./run.sh"
+echo "   If there were errors, please retry on Ubuntu-based linux"
+echo "<<============================================================>>"
