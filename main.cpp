@@ -22,7 +22,7 @@ int unit_tests(){
     Plane p = Plane(Vector3(0,0,0), Vector3(0,1,0), pp);
     Ray r = Ray(Vector3(0,0,-20), Vector3(0,0,1));
     Sphere s = Sphere(Vector3(0,0,0), 2, pp);
-    
+
     printf("Intersection at %.4f\n",s.intersect(&r));
     std::cout << c.ntos(255) << std::endl;
     
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 {
     //unit_tests();
     
-    //original view.  Hang on to these.
+    //original view. Render any n x n region
     Vector3 top_l = Vector3(-.1,.1,-.1);
     Vector3 bottom_l = Vector3(-.1,-.1,-.1);
     Vector3 top_r = Vector3(.1,.1,-.1);
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     int text_height = 20;
 
     Tracer perspective_tracer = Tracer(true, false); //lighting, d^2 lighting falloff
-    Ray cam = Ray(Vector3(0,0,0), Vector3(0,0,-1));
+    Ray cam = Ray(Vector3(0,0,0), Vector3(0,0,-1)); 
     Room perspective_room = Room(cam, top_l, top_r, bottom_l, Color(0,0,0));
     Renderer ppm_renderer = Renderer(width, height, 0, false, 8); //antialiasing, sqrt(sample_size)
     Renderer text_renderer = Renderer(text_width, text_height, 0, false, 0);
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
     Plane p1 = Plane(Vector3(0,-2,0), Vector3(0,1,0), pp4);
     Plane p2 = Plane(Vector3(0,0,10), Vector3(0,0,-1), pp4);
     
-    //relfectiveness.  Not necessary - assumed false
+    //relfectiveness.  Not necessary to declare - assumed false
     s1.reflective = false;
     s1.reflect_index = 1;
     s2.reflective = true;
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     perspective_room.addObject(&s3);
     //perspective_room.addObject(&s4);
     //perspective_room.addObject(&s5);
-    perspective_room.addObject(&p1);
+    //perspective_room.addObject(&p1);
     //perspective_room.addObject(&p2);
     perspective_room.addLight(l1);
     perspective_room.addLight(l2);
@@ -115,8 +115,10 @@ int main(int argc, char **argv)
     perspective_tracer.trace(&perspective_room, &ppm_renderer);
     perspective_tracer.trace(&perspective_room, &text_renderer);
     
+    //create a text preview before starting the full render.
     text_renderer.render_text();
-    ppm_renderer.render_ppm("../Images/out.ppm");
+    //assumes that executable is run within the ./Build directory
+    ppm_renderer.render_ppm("./Images/out.ppm");
     
     return 0;
 }

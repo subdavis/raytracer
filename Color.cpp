@@ -10,8 +10,8 @@ Color::Color(double r, double g, double b): r(r), g(g), b(b)
 {
 }
 
-int Color::to_text(){
-    return r + g + b > 0 ? 7 : 0;
+char Color::to_text(){
+    return r + g + b > 0 ? '#' : ' ';
 }
 
 std::string Color::to_ppm(double max){
