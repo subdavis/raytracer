@@ -12,6 +12,7 @@ public:
     virtual Vector3 getOrtho(Vector3 *point) = 0;
     virtual Vector3 point_above(Vector3 *point) = 0;
     virtual double get_reflect() = 0;
+    virtual Color getColor() = 0;
     virtual bool is_reflective() = 0;
     virtual ~Drawable() {}
 //    Drawable();

@@ -11,7 +11,9 @@ class Plane : public Drawable
 public:
     Plane() {}
     Plane(Vector3 point, Vector3 ortho, PhongProp phong);
+    Plane(Vector3 point, Vector3 ortho, PhongProp phong, Color c);
     virtual PhongProp getPhong();
+    virtual Color getColor();
     Vector3 getOrtho(Vector3 *point);
     Vector3 point_above(Vector3 *point);
     virtual double intersect(Ray *r);
@@ -20,6 +22,7 @@ public:
     ~Plane();
     Vector3 point;
     Vector3 ortho;
+    Color color;
     PhongProp phong;
     bool reflective;
     double reflect_index;

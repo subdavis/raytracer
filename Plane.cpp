@@ -7,6 +7,13 @@ point(point), ortho(ortho), phong(phong)
     reflective = false;
 }
 
+Plane::Plane(Vector3 point, Vector3 ortho, PhongProp phong, Color c): 
+point(point), ortho(ortho), phong(phong), color(c)
+{
+    reflect_index = 0;
+    reflective = false;
+}
+
 double Plane::intersect(Ray *r){
     double top = r->point.minus(point).dot(ortho);
     double bottom = r->d.dot(ortho);
@@ -24,6 +31,10 @@ double Plane::intersect(Ray *r){
 
 PhongProp Plane::getPhong(){
     return phong;
+}
+
+Color Plane::getColor(){
+    return color;
 }
 
 Vector3 Plane::getOrtho(Vector3 *point){

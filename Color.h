@@ -7,12 +7,14 @@ class Color
 public:
     Color();
     Color(double r, double g, double b);
+    Color(double r, double g, double b, char char_rep);
     char to_text();
     std::string to_ppm(double max);
     ~Color();
     double r;
     double g;
     double b;
+    char char_rep;
     std::string static ntos(int i);
 
 };

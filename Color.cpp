@@ -3,15 +3,18 @@
 #include <sstream>
 #include <iostream>
 
-Color::Color(): r(0), g(0), b(0){
-}
+Color::Color(): r(0), g(0), b(0){}
 
 Color::Color(double r, double g, double b): r(r), g(g), b(b)
 {
+    char_rep = '.';
 }
 
+Color::Color(double r, double g, double b, char char_rep): r(r), g(g), b(b), char_rep(char_rep)
+{}
+
 char Color::to_text(){
-    return r + g + b > 0 ? ' ' : '#';
+    return char_rep;
 }
 
 std::string Color::to_ppm(double max){

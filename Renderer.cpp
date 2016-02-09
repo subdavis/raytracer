@@ -74,13 +74,19 @@ void Renderer::render_ppm(char *filename){
             } else {
                 pcolor = get_pixel(i, j);
             }
-            myfile << pcolor.to_ppm(255 / top) << " ";
+
+            //check if min = max = 0 DONT DIVIDE BY 0
+            if (top == 0){
+                myfile << "0 0 0";
+            } else {
+                myfile << pcolor.to_ppm(255 / top) << " ";
+            }
         }
         myfile << "\n";
     }
     myfile.close();
     
-    std::cout << "Rendered to file " << filename << "\n"  << std::endl;
+    std::cout << "Rendered to file " << filename << std::endl;
 }
 int Renderer::getHeight(){
     return height * sample_index;

@@ -7,6 +7,12 @@ center(center), radius(radius), phong(phong)
     reflect_index = 0;
     reflective = false;
 }
+Sphere::Sphere(Vector3 center, double radius, PhongProp phong, Color c):
+center(center), radius(radius), phong(phong), color(c)
+{
+    reflect_index = 0;
+    reflective = false;
+}
 
 double Sphere::intersect(Ray *r){
     //returns distance to the closest intersection
@@ -45,6 +51,10 @@ Vector3 Sphere::getOrtho(Vector3 *point){
 
 PhongProp Sphere::getPhong(){
     return phong;
+}
+
+Color Sphere::getColor(){
+    return color;
 }
 
 Vector3 Sphere::point_above(Vector3 *point){

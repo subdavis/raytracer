@@ -5,10 +5,9 @@
 #include "Light.h"
 
 Tracer::Tracer(bool lighting, bool falloff): 
-antialias(antialias), lighting(lighting){
+lighting(lighting), falloff(falloff){
     depth = 0;
     max_depth = 5;
-    falloff = false;
 }
 
 void Tracer::trace(Room *room, Renderer *renderer){
@@ -68,7 +67,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
     if (shortest == -1){
         
         //we didn't find an intersection
-        return lighting ? room->bg : Color(0,0,0); //black
+        return room->bg;
     
     } else if (lighting) {
         //there was an intersection and lighting is configured on
@@ -126,13 +125,12 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
                 /*
                  * Diffuse Lighting
                  */
-                double dot = iortho.Unit().dot(vector_to_light);
+                double dot = iortho.Unit().dot(vector_to_light.Scale(falloff_scalar));
                 if (dot >= 0){
                     Id = Id.add(Vector3(iphong.kd.x * dot * ilight.color.r , iphong.kd.y * dot * ilight.color.g , iphong.kd.z * dot * ilight.color.b));
                 } else {
                     Id = Id.add(Vector3(0,0,0));
                 }
-                Id = Id.Scale(falloff_scalar);
                 
                 /*
                  * Specular Lighting
@@ -165,7 +163,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
         return Color(I.x,I.y,I.z);
     } else {
         //lighting was off.
-        return Color(1,1,1);//white
+        return room->objs[shortest_index]->getColor();
     }
 }
 

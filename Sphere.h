@@ -11,12 +11,14 @@ class Sphere : public Drawable
 {
 public:
     Sphere(Vector3 center, double radius, PhongProp phong);
+    Sphere(Vector3 center, double radius, PhongProp phong, Color c);
     virtual double intersect(Ray *r);
     virtual PhongProp getPhong();
     Vector3 getOrtho(Vector3 *point);
     Vector3 point_above(Vector3 *point);
     bool is_reflective();
     double get_reflect();
+    virtual Color getColor();
     ~Sphere();
     
     Vector3 center;
