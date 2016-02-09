@@ -68,7 +68,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
     if (shortest == -1){
         
         //we didn't find an intersection
-        return lighting ? room->bg : Color(1,1,1); //black
+        return lighting ? room->bg : Color(0,0,0); //black
     
     } else if (lighting) {
         //there was an intersection and lighting is configured on
@@ -165,7 +165,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
         return Color(I.x,I.y,I.z);
     } else {
         //lighting was off.
-        return Color(0,0,0);//white
+        return Color(1,1,1);//white
     }
 }
 

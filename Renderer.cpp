@@ -80,7 +80,7 @@ void Renderer::render_ppm(char *filename){
     }
     myfile.close();
     
-    std::cout << "Rendered to file\n" << std::endl;
+    std::cout << "Rendered to file " << filename << "\n"  << std::endl;
 }
 int Renderer::getHeight(){
     return height * sample_index;
