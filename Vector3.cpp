@@ -44,6 +44,10 @@ double Vector3::dot(Vector3 b){
 }
 Vector3 Vector3::cross(Vector3 b){
     //unimplemented
+    double i = y * b.z -  z * b.y;
+    double j = z * b.x - x * b.z;
+    double k = x * b.y - y * b.x;
+    return Vector3(i,j,k);
 }
 
 Vector3 Vector3::minus(Vector3 b){

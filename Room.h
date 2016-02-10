@@ -26,8 +26,6 @@ public:
     Ray cam;
     double step_x;
     double step_y;
-    
-private:
     Vector3 bottom_l;
     Vector3 top_r;
     Vector3 top_l;

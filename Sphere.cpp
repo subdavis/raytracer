@@ -68,6 +68,10 @@ double Sphere::get_reflect(){
     return reflect_index;
 }
 
+void Sphere::setOrigin(Vector3 neworigin){
+    center = neworigin;
+}
+
 Sphere::~Sphere()
 {
 }

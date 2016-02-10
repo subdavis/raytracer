@@ -46,7 +46,7 @@ void Renderer::render_text(){
     }
 //    std::printf("done\n");
 }
-void Renderer::render_ppm(char *filename){
+void Renderer::render_ppm(const char *filename){
     
     std::ofstream myfile;
     myfile.open (filename);

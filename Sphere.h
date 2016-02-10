@@ -16,6 +16,7 @@ public:
     virtual PhongProp getPhong();
     Vector3 getOrtho(Vector3 *point);
     Vector3 point_above(Vector3 *point);
+    void setOrigin(Vector3 neworigin);
     bool is_reflective();
     double get_reflect();
     virtual Color getColor();

@@ -10,7 +10,7 @@ public:
     void set_pixel(int x, int y, Color c);
     Color get_pixel(int x, int y);
     void render_text();
-    void render_ppm(char *filename);
+    void render_ppm(const char *filename);
     int getWidth();
     int getHeight();
     int width;

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <sstream>
 #include <iostream>
+#include <math.h>
 #include "Drawable.h"
 #include "Color.h"
 #include "Light.h"
@@ -81,8 +82,8 @@ int main(int argc, char **argv)
      * Part 3 - With Antialiasing
      */
     Renderer alias_renderer = Renderer(width, height, 0, true, 8);
-    shadow_tracer.trace(&perspective_room, &alias_renderer);
-    alias_renderer.render_ppm("./Images/PartC.ppm");
+    //shadow_tracer.trace(&perspective_room, &alias_renderer);
+    //alias_renderer.render_ppm("./Images/PartC.ppm");
 
     /*
      * EXTRA - With Reflection and lighting falloff.
@@ -96,9 +97,8 @@ int main(int argc, char **argv)
     s3.reflect_index = .6;
     p1.reflective = true;
     p1.reflect_index = .2;
-
-    width = 1000;
-    height = 1000;
+    width = 512;
+    height = 512;
 
     Light l2 = Light(Vector3(-4, 4, -3), Color(100,100,100));
     Light l3 = Light(Vector3(4, 4, -3), Color(100,100,100));
@@ -107,8 +107,54 @@ int main(int argc, char **argv)
 
     Tracer reflect_tracer = Tracer(true, true);
     Renderer reflect_renderer = Renderer(width, height, 0, false, 3);
-    reflect_tracer.trace(&perspective_room, &reflect_renderer);
-    reflect_renderer.render_ppm("./Images/EXTRA.ppm");
+    //reflect_tracer.trace(&perspective_room, &reflect_renderer);
+    //reflect_renderer.render_ppm("./Images/EXTRA.ppm");
+
+    /*
+     * Some experimental rotations
+     */
+
+    Vector3 plane_ortho = Vector3(0,1,0);
+    Vector3 plane_in = Vector3(0,0,-1);
+    double R = 4;
+    Vector3 center = Vector3(0,0,-7);
+    double t = -1;
+    //static Vector3 rotate(Vector3 point, double t, Vector3 u, Vector3 center, Vector3 n, double radius){
+    // Vector3 s1_new_coords = Drawable::rotate(s1.center, t, plane_in, center, plane_ortho, R);
+    // Vector3 s3_new_coords = Drawable::rotate(s3.center, t, plane_in, center, plane_ortho, R);
+    // std::cout << s1_new_coords.x << s1_new_coords.y << s1_new_coords.z << std::endl;
+    // std::cout << s1.center.x << s1.center.y << s1.center.z << std::endl;
+    // s3.setOrigin(s3_new_coords);
+    // s1.setOrigin(s1_new_coords);
+    //
+
+    // cam = Ray(Vector3(0,11,-8), Vector3(0,-1,0)); 
+    // top_l = Vector3(1,10,-7);
+    // bottom_l = Vector3(1,10,-9);
+    // top_r = Vector3(-1,10,-7);
+
+    // perspective_room.cam = cam;
+    // perspective_room.top_l = top_l;
+    // perspective_room.bottom_l = bottom_l;
+    // perspective_room.top_r  = top_r;
+    //Room wide_room = Room(cam, top_l, top_r, bottom_l, dot);
+    // reflect_tracer.trace(&perspective_room, &reflect_renderer);
+    // reflect_renderer.render_ppm("./Images/EXTRA.ppm");
+
+    int i = 0;
+    for (double f = 0; f < 2 * M_PI; f+= .05 * M_PI){
+        Vector3 s1_new_coords = Drawable::rotate(s1.center, f, plane_in, center, plane_ortho, R);
+        Vector3 s3_new_coords = Drawable::rotate(s3.center, f + M_PI, plane_in, center, plane_ortho, R);
+        s3.setOrigin(s3_new_coords);
+        s1.setOrigin(s1_new_coords);
+        reflect_tracer.trace(&perspective_room, &reflect_renderer);
+        std::ostringstream stringStream;
+        stringStream << "./Images/movies/movie" <<  i << ".ppm" ;
+        std::string filename = stringStream.str();
+
+        reflect_renderer.render_ppm(filename.c_str());
+        i++;
+    }
     
     return 0;
 }
