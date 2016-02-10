@@ -99,18 +99,26 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             direct_path = true;
             
             //make a unit ray from the intersect point, using a point just above the surface
-            Ray r_to_light = Ray(ipoint.add(iortho.Scale(.01)), vector_to_light);
+            Ray r_to_light = Ray(ipoint.add(iortho.Scale(.001)), vector_to_light);
             
             //Check every other onbject in the room for light blocking
             for(int o=0; o< num_objects; o++){
                 iobj = room->objs[o];
                 compare = iobj->intersect(&r_to_light);
 //TODO---->     Make sure the intersect doesn't happen behind the light.  for now, we can assume that it wont.
+//THIS IS THE PLANE BUG
                 if (compare == -1){
                     //there is a direct path to the current light.
                 } else {
-                    //something was in the way.  Don't do anything else right now.
-                    direct_path = false;
+
+                    //check if the collission is behind the light or in front of it.
+                    if (compare > (distance_to_light + .1)){
+                        //it happened behind the light.  All is well
+
+                    } else {
+                        //something was in the way.  Don't do anything else right now.
+                        direct_path = false;
+                    }
                     
                     if (compare < 0){
                         //a negative distance will be returned if the shortest point of interseciton is behind the search ray
@@ -125,7 +133,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
                 /*
                  * Diffuse Lighting
                  */
-                double dot = iortho.Unit().dot(vector_to_light.Scale(falloff_scalar));
+                double dot = iortho.dot(vector_to_light.Scale(falloff_scalar));
                 if (dot >= 0){
                     Id = Id.add(Vector3(iphong.kd.x * dot * ilight.color.r , iphong.kd.y * dot * ilight.color.g , iphong.kd.z * dot * ilight.color.b));
                 } else {

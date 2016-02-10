@@ -92,7 +92,7 @@ int Renderer::getHeight(){
     return height * sample_index;
 }
 int Renderer::getWidth(){
-    return height * sample_index;
+    return width * sample_index;
 }
 
 Renderer::~Renderer()
