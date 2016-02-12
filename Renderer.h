@@ -5,7 +5,7 @@
 class Renderer
 {
 public:
-    Renderer(int width, int height, int rtype, bool antialias, int sample_index);
+    Renderer(int width, int height, int rtype, bool antialias, int sample_index, double gamma);
     ~Renderer();
     void set_pixel(int x, int y, Color c);
     Color get_pixel(int x, int y);
@@ -17,6 +17,7 @@ public:
     int height;
     bool antialias;
     int sample_index;
+    double gamma;
 
 private:
     int rtype;

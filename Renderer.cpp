@@ -3,8 +3,8 @@
 #include <cstdio>
 #include <fstream>
 
-Renderer::Renderer(int width, int height, int rtype, bool antialias, int s_index): 
-width(width), height(height), rtype(rtype), antialias(antialias)
+Renderer::Renderer(int width, int height, int rtype, bool antialias, int s_index, double gamma): 
+width(width), height(height), rtype(rtype), antialias(antialias), gamma(gamma)
 {
     //Type is:
     // 0 for black and white
@@ -79,7 +79,7 @@ void Renderer::render_ppm(const char *filename){
             if (top == 0){
                 myfile << "0 0 0";
             } else {
-                myfile << pcolor.to_ppm(255 / top) << " ";
+                myfile << pcolor.to_ppm(top, 255, gamma) << " ";
             }
         }
         myfile << "\n";

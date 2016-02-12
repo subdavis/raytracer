@@ -24,6 +24,13 @@ std::string Color::to_ppm(double max){
     return ri + " " + gi + " " + bi;
     
 }
+std::string Color::to_ppm(double oldmax, double newmax, double gamma){
+    //step 1: normalize to between 0 and 1
+    double ri = pow(r / oldmax, 1/gamma) * newmax;
+    double gi = pow(g / oldmax, 1/gamma) * newmax;
+    double bi = pow(b / oldmax, 1/gamma) * newmax;
+    return ntos(round(ri)) + " " + ntos(round(gi)) + " " + ntos(round(bi));
+}
 
 std::string Color::ntos(int i){
     std::ostringstream convert;

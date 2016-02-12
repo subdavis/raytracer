@@ -12,24 +12,23 @@
 . . . . . . . . . . . . . . . . . . . .     + unzip this archive
 . . . . . . . . █ █ █ █ . . . . . . . .     + open a terminal and cd to the source directory
 . . . . . . . █ █ █ █ █ █ . . . . . . .     + run "./build.sh"
-_ _ _ █ █ █ _ █ █ █ █ █ █ _ █ █ █ _ _ _     + run "./run.sh" 
+_ _ _ █ █ █ _ █ █ █ █ █ █ _ █ █ █ _ _ _     + run "./run.sh"  (runtime ~15 seconds)
 _ _ _ █ █ █ _ █ █ █ █ █ █ _ █ █ █ _ _ _     + images will be located in ./Images
-_ _ _ _ _ _ _ █ █ █ █ █ █ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ █ █ █ █ █ █ _ _ _ _ _ _ _ 
 _ _ _ _ _ _ _ _ █ █ █ █ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
 ======================================== Build Requirements =====================================
 |
-|   + Any OS capable of running a BASH script
-|   + The g++ compiler
+|   + Any OS with a BASH shell
+|   + The g++ compiler (I used version 5.2.1)
 |       * Can be installed on ubuntu-based systems via "sudo apt-get install build-essential"
 |   + An image viewer that supports the .ppm format
 |       * Alternatively, use imagemagick to create a .png from the .ppm output
 |       * "sudo apt-get install imagemagick"
 |       * "cd Images"
-|       * "convert <ppm image name>  <png image name>"
+|       * "./convert.sh"
 |   + OpenGL is NOT required.
 |
 ======================================= Description of Parts ====================================
@@ -42,7 +41,8 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 |           - Each drawable has a PhongProp - Phong properties that the tracer will use to compute lighting
 |       * A camera: a point in threespace to make the origin of each ray.
 |       * Any number of lights, each of which will be computed spearately in the trace function.
-|       * A View window: Can be set to any 3 coplanar points in space.  The room will generate initial camera rays based on the camera and view window
+|       * A View window: Can be set to any 3 coplanar points in space.  
+|       * The room will generate initial camera rays based on the camera and view window
 |   + The Tracer, which only implements perspective tracing but could be easily refactored to allow for orthographic tracing.
 |       * Tracer logic: check if a camera ray has any intersections, then compute lighting for the closest intersect point it finds.
 |   + The Renderer, which encapsulates antialiasing and image resolution.  
@@ -53,5 +53,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 |       * Color: normalized at the end of rendering based on the global min and max 
 |       * Vector3: used for both vectors and points
 |       * Ray: Which wraps a vector and a point together, and is the basic unit for checking intersection
+|
+|   For more detailed information, see inline comments.
 |
 =================================================================================================
