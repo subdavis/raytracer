@@ -30,8 +30,8 @@ int playground(){
     bottom_l = Vector3(-.166,-.1,-.1);
     top_r = Vector3(.166,.1,-.1);
 
-    int width = 800;
-    int height = 450;
+    int width = 1600;
+    int height = 900;
     int text_width = 32;
     int text_height = 18;
 

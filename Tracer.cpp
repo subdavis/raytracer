@@ -105,8 +105,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             for(int o=0; o< num_objects; o++){
                 iobj = room->objs[o];
                 compare = iobj->intersect(&r_to_light);
-//TODO---->     Make sure the intersect doesn't happen behind the light.  for now, we can assume that it wont.
-//THIS IS THE PLANE BUG
+
                 if (compare == -1){
                     //there is a direct path to the current light.
                 } else {
@@ -128,7 +127,7 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             }
             
             // do this after we check all the objects
-            if (direct_path){
+            if (direct_path ){
                 
                 /*
                  * Diffuse Lighting
