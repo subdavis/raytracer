@@ -21,11 +21,6 @@ public:
     int num_lights;
     int depth;
     int max_depth;
-
-private:
-    //data for objects and lights in the room
-    Drawable *iobj;
-    Light ilight;
 };
 
 #endif // TRACER_H

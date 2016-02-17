@@ -51,23 +51,6 @@ double Room::getRandom(double max){
     return static_cast <double> (rand()) / static_cast <double> (max);
 }
 
-int Room::intersect(Ray *start_ray){
-    //iterate over the items in the scene and get the closest intersection.
-    shortest = -1;
-    shortest_index = -1;
-
-    for(int o=0; o<objs.size(); o++){
-        iobj = objs[o];
-        compare = iobj->intersect(start_ray);
-        if (compare != -1){
-            if (compare < shortest || shortest == -1){
-                shortest = compare;
-                shortest_index = o;}}
-    }
-    //-1 if we didn't find one
-    return shortest_index;
-}
-
 Room::~Room()
 {}
 
