@@ -22,10 +22,10 @@ Ray* Room::find_pixel_points(Renderer *renderer){
     int height = renderer->getHeight();
     
     //direction from left to right in view frame
-    Vector3 v_right = top_r.minus(top_l);
+    Vector3 v_right = get_v_right();
     Vector3 u_right = v_right.Unit();
     //direction from top to bottom
-    Vector3 v_down = bottom_l.minus(top_l);
+    Vector3 v_down = get_v_down();
     Vector3 u_down = v_down.Unit();
     //step scalars for each pixel
     step_x = std::abs(v_right.Scale(1.0/width).Magnitude());
@@ -45,6 +45,14 @@ Ray* Room::find_pixel_points(Renderer *renderer){
         }
     }
     return rays;
+}
+
+Vector3 Room::get_v_down(){
+    return bottom_l.minus(top_l);
+}
+
+Vector3 Room::get_v_right(){
+    return top_r.minus(top_l);
 }
 
 double Room::getRandom(double max){

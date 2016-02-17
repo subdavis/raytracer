@@ -202,8 +202,8 @@ int pa1(){
     perspective_room.addObject(&p1);
     perspective_room.addLight(l1);
     
-    perspective_tracer.trace(&perspective_room, &ppm_renderer);
-    perspective_tracer.trace(&perspective_room, &text_renderer);
+    perspective_tracer.fly_trace(&perspective_room, &ppm_renderer);
+    perspective_tracer.fly_trace(&perspective_room, &text_renderer);
     
     //create a text preview before starting the full render.
     text_renderer.render_text();
@@ -214,14 +214,14 @@ int pa1(){
      * Part 2 - shading and shadows
      */
     Tracer shadow_tracer = Tracer(true, false);
-    shadow_tracer.trace(&perspective_room, &ppm_renderer);
+    shadow_tracer.fly_trace(&perspective_room, &ppm_renderer);
     ppm_renderer.render_ppm("./Images/PartB.ppm");
     
     /*
      * Part 3 - With Antialiasing
      */
     Renderer alias_renderer = Renderer(width, height, 0, true, 8, 2.2);
-    shadow_tracer.trace(&perspective_room, &alias_renderer);
+    shadow_tracer.fly_trace(&perspective_room, &alias_renderer);
     alias_renderer.render_ppm("./Images/PartC.ppm");
     return 0;
 }

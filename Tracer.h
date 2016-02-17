@@ -1,9 +1,9 @@
 #ifndef TRACER_H
 #define TRACER_H
-#include "Room.h"
 #include "Renderer.h"
 #include "Ray.h"
 #include "Color.h"
+#include "Room.h"
 
 class Tracer
 {
@@ -11,6 +11,7 @@ public:
     Tracer(bool lighting, bool falloff);
     ~Tracer();
     void trace(Room *room, Renderer *renderer);
+    void fly_trace(Room *room, Renderer *renderer);
     Color recursive_trace(Ray start_ray, Room *room, Renderer *r);
     bool antialias;
     bool lighting;

@@ -20,6 +20,8 @@ public:
     vector<Drawable*> objs;
     vector<Light> lights;
     Ray* find_pixel_points(Renderer *renderer);
+    Vector3 get_v_right();
+    Vector3 get_v_down();
     double getRandom(double max);
     
     Color bg;

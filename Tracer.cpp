@@ -28,6 +28,48 @@ void Tracer::trace(Room *room, Renderer *renderer){
     }
 }
 
+// Instead of storing the array of new rays, just compute them on the fly
+void Tracer::fly_trace(Room *room, Renderer *renderer){
+    
+    int width = renderer->getWidth();
+    int height = renderer->getHeight();
+
+    //data for objects and lights in the room
+    num_objects = room->objs.size();
+    num_lights = room->lights.size();
+    
+    //direction from left to right in view frame
+    Vector3 v_right = room->get_v_right();
+    Vector3 u_right = v_right.Unit();
+    //direction from top to bottom
+    Vector3 v_down = room->get_v_down();
+    Vector3 u_down = v_down.Unit();
+    //step scalars for each pixel
+    double step_x = std::abs(v_right.Scale(1.0/width).Magnitude());
+    double step_y = std::abs(v_down.Scale(1.0/height).Magnitude());
+    
+    Vector3 xdiff;
+    Vector3 ydiff;
+    Vector3 p_new;
+    Ray current;
+
+    //raster left to right, then top to bottom
+    for (int j = 0; j < height; j++){
+        for (int i = 0; i < width; i++){
+            //Logic for getting new pixel point
+            xdiff = u_right.Scale(step_x * i + (step_x/2));
+            ydiff = u_down.Scale(step_y * j + (step_y/2));
+            //don't access top_l in this way - bad practice
+            p_new = room->top_l.add(xdiff).add(ydiff);
+            current = Ray(p_new, p_new.minus(room->cam.point).Unit());
+
+            //do the trace function
+            depth = 0;
+            renderer->set_pixel(i,j, recursive_trace(current, room, renderer) );
+        }
+    }
+}
+
 Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
 
     /*
