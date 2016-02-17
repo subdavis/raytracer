@@ -21,6 +21,7 @@ public:
     vector<Light> lights;
     Ray* find_pixel_points(Renderer *renderer);
     double getRandom(double max);
+    int intersect(Ray *start_ray);
     
     Color bg;
     Ray cam;
@@ -29,6 +30,13 @@ public:
     Vector3 bottom_l;
     Vector3 top_r;
     Vector3 top_l;
+    double shortest;
+
+private:
+    //for the intersect function
+    Drawable *iobj;
+    double compare;
+    int shortest_index;
 };
 
 #endif // ROOM_H

@@ -229,6 +229,6 @@ int pa1(){
 int main(int argc, char **argv)
 {
     pa1();
-    playground(); // Uncomment for a really awesome render
+    //playground(); // Uncomment for a really awesome render
     return 0;
 }

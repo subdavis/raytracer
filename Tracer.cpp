@@ -16,7 +16,7 @@ void Tracer::trace(Room *room, Renderer *renderer){
     //generate the 2d array of rays through the camera and each pixel
     Ray *rays = room->find_pixel_points(renderer);
     //data for objects and lights in the room
-    num_objects = room->objs.size();
+    // num_objects = room->objs.size();
     num_lights = room->lights.size();
     int dex;
     for(int j=0; j< height ; j++){ // y
@@ -35,36 +35,19 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
      * Invoked for every pixel in the render
      * Called recursively for reflective objects to a max depth declared in the constructor
      */
-     
-    //data for objects and lights in the room
-    Drawable *iobj;
-    Light ilight;
-    //data for a given intersection point
-    Vector3 iortho;
-    Vector3 ipoint;
-    PhongProp iphong;
-    double shortest;
-    double compare;
-    int shortest_index;
-    //for light stuff
-    bool direct_path;
-    bool inside_sphere;
-    Vector3 I;
+
+    //lighting values
+    Vector3 I;  //overall
     Vector3 Ia; //ambient
     Vector3 Id; //diffuse
     Vector3 Is; //specular
-    //iterate over the items in the scene and get the closest intersection.
-    shortest = -1;
-    for(int o=0; o<num_objects; o++){
-        iobj = room->objs[o];
-        compare = iobj->intersect(&start_ray);
-        if (compare != -1){
-            if (compare < shortest || shortest == -1){
-                shortest = compare;
-                shortest_index = o;}}
-    }
+
+    //ask the room what the closest object is
+    int shortest_index = room->intersect(&start_ray);
+    double shortest = room->shortest;
+
     
-    if (shortest == -1){
+    if (shortest_index == -1){
         
         //we didn't find an intersection
         return room->bg;
@@ -73,11 +56,11 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
         //there was an intersection and lighting is configured on
 
         //do lighting using the intersect point and ortho
-        ipoint = start_ray.point.add( start_ray.d.Scale(shortest) );
-        iortho = room->objs[shortest_index]->getOrtho(&ipoint);
-        iphong = room->objs[shortest_index]->getPhong();
+        Vector3 ipoint = start_ray.point.add( start_ray.d.Scale(shortest) );
+        Vector3 iortho = room->objs[shortest_index]->getOrtho(&ipoint);
+        PhongProp iphong = room->objs[shortest_index]->getPhong();
         
-        inside_sphere = false;
+        bool inside_sphere = false;
         
         //iterate over the lights to get illumiation at the point
         for (int li=0; li<num_lights;li++){
@@ -96,38 +79,36 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             Ia = Ia.Scale(falloff_scalar);
             
             //Only run the rest of the lighting algo if there's a direct path to one of the lights
-            direct_path = true;
+            bool direct_path = true;
             
             //make a unit ray from the intersect point, using a point just above the surface
             Ray r_to_light = Ray(ipoint.add(iortho.Scale(.001)), vector_to_light);
             
             //Check every other onbject in the room for light blocking
-            for(int o=0; o< num_objects; o++){
-                iobj = room->objs[o];
-                compare = iobj->intersect(&r_to_light);
+            int shortest_light_blocker = room->intersect(&r_to_light);
+            int shortest_distance = room->shortest;
 
-                if (compare == -1){
-                    //there is a direct path to the current light.
+            if (shortest_light_blocker == -1){
+                //there is a direct path to the current light.
+            } else {
+
+                //check if the collission is behind the light or in front of it.
+                if (shortest_distance > (distance_to_light + .01)){
+                    //it happened behind the light.  All is well
+
                 } else {
-
-                    //check if the collission is behind the light or in front of it.
-                    if (compare > (distance_to_light + .1)){
-                        //it happened behind the light.  All is well
-
-                    } else {
-                        //something was in the way.  Don't do anything else right now.
-                        direct_path = false;
-                    }
-                    
-                    if (compare < 0){
-                        //a negative distance will be returned if the shortest point of interseciton is behind the search ray
-                        inside_sphere = true;
-                    }
+                    //something was in the way.  Don't do anything else right now.
+                    direct_path = false;
+                }
+                
+                if (shortest_distance < 0){
+                    //a negative distance will be returned if the shortest point of interseciton is behind the search ray
+                    inside_sphere = true;
                 }
             }
             
             // do this after we check all the objects
-            if (direct_path ){
+            if (direct_path){
                 
                 /*
                  * Diffuse Lighting
