@@ -1,6 +1,6 @@
 mkdir -p Build
 mkdir -p Images
-FLAGS="-g -O2 -Wall  -o"
+FLAGS="-g -O2 -Wall -o"
 g++  -c  "main.cpp" $FLAGS ./Build/main.cpp.o -I. 
 g++  -c  "Vector3.cpp" $FLAGS ./Build/Vector3.cpp.o -I. 
 g++  -c  "Ray.cpp" $FLAGS ./Build/Ray.cpp.o -I. 
