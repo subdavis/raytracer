@@ -11,7 +11,7 @@ public:
     char to_text();
     std::string to_ppm(double max);
     std::string to_ppm(double oldmax, double newmax, double gamma);
-    ~Color();
+    // ~Color();
     double r;
     double g;
     double b;

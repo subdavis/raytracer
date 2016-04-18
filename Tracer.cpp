@@ -207,7 +207,10 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             //move the origin away from the object.
             Ray ref_r = Ray(ipoint.add(ref_u.Scale(.0001)), ref_u);
             Color result = recursive_trace(ref_r, room, r);
-            I = I.add( Vector3(result.r, result.g, result.b).Scale( room->objs[shortest_index]->get_reflect() ));
+            Vector3 newI = Vector3(result.r, result.g, result.b);
+            double alpha = room->objs[shortest_index]->getPhong().alpha;
+            I = newI.Scale(alpha).add(I.Scale(1-alpha));
+            //I = I.add( Vector3(result.r, result.g, result.b).Scale( room->objs[shortest_index]->get_reflect() ));
         }
         return Color(I.x,I.y,I.z);
     } else {

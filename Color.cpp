@@ -39,7 +39,7 @@ std::string Color::ntos(int i){
     return out;
 }
 
-Color::~Color()
-{
-}
+// Color::~Color()
+// {
+// }
 
