@@ -54,5 +54,11 @@ Vector3 Vector3::minus(Vector3 b){
     Vector3 v (x - b.x, y - b.y, z - b.z);
     return v;
 }
+Vector3 Vector3::reflect(Vector3 norm){
+    norm = norm.Unit();
+    Vector3 vv = norm.Scale(this->dot(norm) * 2 );
+    return this->minus(vv);
+}
+
 
 Vector3::~Vector3(){}

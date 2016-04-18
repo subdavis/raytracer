@@ -17,6 +17,7 @@ class Vector3
         Vector3 add_const(double c);
         Vector3 add(Vector3 b);
         Vector3 multiply(Vector3 b);
+        Vector3 reflect(Vector3 norm);
         Vector3 cross(Vector3 b);
         double Magnitude();
     

@@ -184,9 +184,18 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
                 /*
                  * Specular Lighting
                  */
-                double sr = iphong.ks.x * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.r;
-                double sg = iphong.ks.y * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.g;
-                double sb = iphong.ks.z * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.b;
+                Vector3 reflect_dir = vector_to_light.Scale(-1).reflect(iortho);
+                Vector3 half_angle = to_eye.add(vector_to_light).Unit();
+                double spec_angle = std::max(iortho.dot(half_angle), 0.0);
+                double specular = std::pow(spec_angle, iphong.spower);
+
+                double sr = iphong.ks.x * specular * ilight.color.r;
+                double sg = iphong.ks.y * specular * ilight.color.g;
+                double sb = iphong.ks.z * specular * ilight.color.b;
+
+                // double sr = iphong.ks.x * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.r;
+                // double sg = iphong.ks.y * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.g;
+                // double sb = iphong.ks.z * pow( (reflect.dot(to_eye)), iphong.spower) * ilight.color.b;
                 Is = Is.add(Vector3(sr, sg, sb));
                 Is = Is.Scale(falloff_scalar);
             }
