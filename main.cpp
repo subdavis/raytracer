@@ -94,9 +94,9 @@ int playground(){
     s2.reflective = false;
     s2.reflect_index = .8;
     s3.reflective = true;
-    s3.reflect_index = .6;
+    s3.reflect_index = .8;
     p1.reflective = true;
-    p1.reflect_index = .2;
+    p1.reflect_index = .5;
     p2.reflective = true;
     p2.reflect_index = .5;
     width = 512;

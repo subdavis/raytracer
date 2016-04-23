@@ -7,7 +7,7 @@
 Tracer::Tracer(bool lighting, bool falloff): 
 lighting(lighting), falloff(falloff){
     depth = 0;
-    max_depth = 5;
+    max_depth = 2;
 }
 
 void Tracer::trace(Room *room, Renderer *renderer){
@@ -211,10 +211,11 @@ Color Tracer::recursive_trace(Ray start_ray, Room *room, Renderer *r){
             //get the reflect vector
             //c1 = -dot_product( N, V )
             //Rl = V + (2 * N * c1 )
-            double c1 = -1 * iortho.dot(start_ray.d);
-            Vector3 ref_u = start_ray.d.add(iortho.Scale(2*c1)).Unit();
+            // double c1 = -1 * iortho.dot(start_ray.d);
+            // Vector3 ref_u = start_ray.d.add(iortho.Scale(2*c1)).Unit();
+            Vector3 ref_u = start_ray.d.reflect(iortho).Unit();
             //move the origin away from the object.
-            Ray ref_r = Ray(ipoint.add(ref_u.Scale(.0001)), ref_u);
+            Ray ref_r = Ray(ipoint.add(iortho.Scale(.0001)), ref_u);
             Color result = recursive_trace(ref_r, room, r);
             Vector3 newI = Vector3(result.r, result.g, result.b);
             double alpha = room->objs[shortest_index]->getPhong().alpha;
