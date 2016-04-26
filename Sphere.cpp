@@ -28,8 +28,8 @@ double Sphere::intersect(Ray *r){
         //an intersection was not found
         return -1;
     }else{
-        double d1 = (b + sqrt(inner_root)) / ddd;
-        double d2 = (b - sqrt(inner_root)) / ddd; //should be shortest
+        double d1 = (b + sqrt(inner_root)) / ddd; //tplus
+        double d2 = (b - sqrt(inner_root)) / ddd; //tminus should be shortest
         //perform for the shortest distance
         if (d2 < d1 && d2 >= 0){
             return d2;

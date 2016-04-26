@@ -17,17 +17,19 @@ width(width), height(height), rtype(rtype), antialias(antialias), gamma(gamma)
     }
     rowlen = width * sample_index;
     pixels = new Color[width*height*sample_index*sample_index];
-    top = 0;
+    top = 1;
 }
 
 void Renderer::set_pixel(int x, int y, Color c){
     int dex = y * rowlen + x;
+    //implement clamping
+
     if (c.r > top){
-        top = c.r;
+        c.r = top;
     } else if (c.g > top) {
-        top = c.g;
+        c.g = top;
     } else if (c.b > top) {
-        top = c.b;
+        c.b = top;
     }
     pixels[dex] = c;
 }
@@ -47,7 +49,7 @@ void Renderer::render_text(){
 //    std::printf("done\n");
 }
 void Renderer::render_ppm(const char *filename){
-    
+    std::cout << top << std::endl;
     std::ofstream myfile;
     myfile.open (filename);
     myfile << "P3\n";

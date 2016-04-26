@@ -32,7 +32,7 @@ int playground(){
 
     int width = 512;//1600;
     int height = 512;//900;
-    int text_width = 32;
+    int text_width = 18;
     int text_height = 18;
 
     //bits to do the fancy ascii renderer
@@ -51,19 +51,19 @@ int playground(){
     PhongProp pp1 = PhongProp(Vector3(.2,0,0), Vector3(1,0,0), Vector3(0,0,0),0, 0);
     PhongProp pp2 = PhongProp(Vector3(0,.2,0), Vector3(0,.5,0), Vector3(.5,.5,.5), 32, 0);
     PhongProp pp3 = PhongProp(Vector3(0,0,.2), Vector3(0,0,1), Vector3(0,0,0), 0, .8);
-    PhongProp pp4 = PhongProp(Vector3(.2,.2,.2), Vector3(1,1,1), Vector3(.1,.1,.1), 32, 0);
+    //PhongProp pp4 = PhongProp(Vector3(.2,.2,.2), Vector3(1,1,1), Vector3(.1,.1,.1), 32, 0);
     PhongProp pp5 = PhongProp(Vector3(.1,.1,.1), Vector3(1,1,1), Vector3(0,0,0), 0, .5);
     
     //declare objects
     Sphere s1 = Sphere(Vector3(-4, 0, -7), 1, pp1, hash);
     Sphere s2 = Sphere(Vector3(0, 0, -7), 2, pp2, hash);
     Sphere s3 = Sphere(Vector3(4, 0, -7), 1, pp3, hash);
-    Sphere s4 = Sphere(Vector3(0,0,4), 2, pp4, hash);
+    //Sphere s4 = Sphere(Vector3(0,0,4), 2, pp4, hash);
     Plane p1 = Plane(Vector3(0,-2,0), Vector3(0,1,0), pp5, underscore);
-    Plane p2 = Plane(Vector3(0,0,-16), Vector3(0,0,1), pp5, dot);
+    //Plane p2 = Plane(Vector3(0,0,-16), Vector3(0,0,1), pp5, dot);
 
     //declare lights
-    Light l2 = Light(Vector3(-4, 4, -3), Color(100,100,100));
+    Light l2 = Light(Vector3(-4, 4, -3), Color(1,1,1));
     Light l3 = Light(Vector3(4, 4, -3), Color(150,120,90));
     Light l4 = Light(Vector3(7,9,-12), Color(20, 20, 60));
     Light l5 = Light(Vector3(2,9,-12), Color(30, 60, 40));
@@ -97,13 +97,13 @@ int playground(){
     s3.reflect_index = .8;
     p1.reflective = true;
     p1.reflect_index = .5;
-    p2.reflective = true;
-    p2.reflect_index = .5;
+    //p2.reflective = true;
+    //p2.reflect_index = .5;
     width = 512;
     height = 512;
 
     perspective_tracer.trace(&perspective_room, &ppm_renderer);
-    ppm_renderer.render_ppm("./Images/EXTRA.ppm");
+    ppm_renderer.render_ppm("./Images/PA4.ppm");
 
     /*
      * Some experimental rotations  - Safe to ignore
@@ -183,7 +183,7 @@ int pa1(){
     //declare colors
     PhongProp pp1 = PhongProp(Vector3(.2,0,0), Vector3(1,0,0), Vector3(0,0,0),0, 0);
     PhongProp pp2 = PhongProp(Vector3(0,.2,0), Vector3(0,.5,0), Vector3(.5,.5,.5), 32, 0);
-    PhongProp pp3 = PhongProp(Vector3(0,0,.2), Vector3(0,0,1), Vector3(0,0,0), 0, .8);
+    PhongProp pp3 = PhongProp(Vector3(0,0,.2), Vector3(0,0,1), Vector3(0,0,0), 32, .8);
     PhongProp pp4 = PhongProp(Vector3(.2,.2,.2), Vector3(1,1,1), Vector3(0,0,0), 0, .5);
     
     //declare objects
